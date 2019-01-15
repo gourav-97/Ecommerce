@@ -27,7 +27,6 @@ public class ProductsController {
 
     @RequestMapping("/categories")
     public List<Products> Getcategories() {
-
         Query query = new Query();
         List<Products> categories =
                 mongoTemplate.findDistinct(query,"category","Products",Products.class,Products.class);
@@ -38,31 +37,24 @@ public class ProductsController {
     public List<Products> Getsubcategories(@PathVariable String category) {
 
         Query query = new Query();
-        query.addCriteria(Criteria.where("Category").is(category));
+        query.addCriteria(Criteria.where("category").is(category));
         List<Products> subcategories =
                 mongoTemplate.findDistinct(query,"subCategory","Products",Products.class,Products.class);
         return subcategories;
     }
 
-    @RequestMapping("/categories")
-    public List<Products> Getcategories() {
-
+    @RequestMapping("/categories/{category}/{subcategory}")
+    public List<Products> Getproducts(@PathVariable String category,@PathVariable String subcategory) {
         Query query = new Query();
-        List<Products> categories =
-                mongoTemplate.findDistinct(query,"category","Products",Products.class,Products.class);
-        return categories;
+        query.addCriteria(Criteria.where("subCategory").is(subcategory));
+        List<Products> products = mongoTemplate.find(query,Products.class);
+        return products;
     }
-
-
+    
     @RequestMapping("/all")
     public List<Products> ShowAll() {
         return productsRepository.findAll();
     }
-
-//    @RequestMapping("/products")
-//    public List<Products> GetProducts() {
-//        return productsRepository.findAll();
-//    }
 
     @RequestMapping("/products/{id}")
     public List<Products> getProducts(@PathVariable String id) {
