@@ -5,8 +5,9 @@ import com.ECommerce.Ecommerce.Repositories.ProductsRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.data.mongodb.core.query.Query;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -24,16 +25,44 @@ public class ProductsController {
         return "Welcome To The Site";
     }
 
-//    @RequestMapping("/categories")
+    @RequestMapping("/categories")
+    public List<Products> Getcategories() {
+
+        Query query = new Query();
+        List<Products> categories =
+                mongoTemplate.findDistinct(query,"category","Products",Products.class,Products.class);
+        return categories;
+    }
+
+    @RequestMapping("/categories/{category}")
+    public List<Products> Getsubcategories(@PathVariable String category) {
+
+        Query query = new Query();
+        query.addCriteria(Criteria.where("Category").is(category));
+        List<Products> subcategories =
+                mongoTemplate.findDistinct(query,"subCategory","Products",Products.class,Products.class);
+        return subcategories;
+    }
+
+    @RequestMapping("/categories")
+    public List<Products> Getcategories() {
+
+        Query query = new Query();
+        List<Products> categories =
+                mongoTemplate.findDistinct(query,"category","Products",Products.class,Products.class);
+        return categories;
+    }
+
+
+    @RequestMapping("/all")
+    public List<Products> ShowAll() {
+        return productsRepository.findAll();
+    }
+
+//    @RequestMapping("/products")
 //    public List<Products> GetProducts() {
 //        return productsRepository.findAll();
 //    }
-//
-
-    @RequestMapping("/products")
-    public List<Products> GetProducts() {
-        return productsRepository.findAll();
-    }
 
     @RequestMapping("/products/{id}")
     public List<Products> getProducts(@PathVariable String id) {

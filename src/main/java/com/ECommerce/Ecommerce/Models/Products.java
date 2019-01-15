@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 public class Products {
     @Id
     public ObjectId _id;
+    @NotNull(message = "Cannot be NUll")
     public  String category;
     public int categoryId;
     public String subCategory;

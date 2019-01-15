@@ -11,8 +11,13 @@ import java.util.List;
 public interface ProductsRepository extends MongoRepository<Products,String> {
 
     List<Products> findAll();
+
     Products findBy_id(String id);
 
     List<Products> findBycategory(String name);
+
+    @Query(value = "{'distinct':'Products','key':'category'}")
+//    @Query(fields = "{'category':1}")
+    List<Products> findcategory();
 
 }
