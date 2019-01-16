@@ -10,29 +10,26 @@ import javax.validation.constraints.NotNull;
 @Document (collection = "Products")
 public class Products {
     @Id
-    public ObjectId _id;
-    @NotNull(message = "Cannot be NUll")
-    public  String category;
-    public int categoryId;
-    public String subCategory;
-    public String productName;
+    private ObjectId _id;
+    private ObjectId parentId;
+    private String productName;
     @NotNull(message = "Product Id can not be Null")
-    public String productId;
-    public String brand;
-    public int price;
-    public String desc;
-    public int quantity;
-    public Object genFeatures;
-    public Object prodSpecs;
+    private String productId;
+    private String brand;
+    private int price;
+    private String desc;
+    private int quantity;
+    private Object genFeatures;
+    private Object prodSpecs;
 
 
     public Products() {
 
     }
-    public Products(ObjectId _id,String category, int categoryId, String subCategory, String productName, String productId, String brand, int price, String desc, int quantity, Object genFeatures, Object prodSpecs) {
-        this.category = category;
-        this.categoryId = categoryId;
-        this.subCategory = subCategory;
+
+    public Products(ObjectId _id, ObjectId parentId, String productName, @NotNull(message = "Product Id can not be Null") String productId, String brand, int price, String desc, int quantity, Object genFeatures, Object prodSpecs) {
+        this._id = _id;
+        this.parentId = parentId;
         this.productName = productName;
         this.productId = productId;
         this.brand = brand;
@@ -43,24 +40,20 @@ public class Products {
         this.prodSpecs = prodSpecs;
     }
 
+    public ObjectId getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(ObjectId parentId) {
+        this.parentId = parentId;
+    }
+
     public String get_id() {
         return _id.toHexString();
     }
 
     public void set_id(ObjectId _id) {
         this._id = _id;
-    }
-
-    public void setcategory(String category) {
-        this.category = category;
-    }
-
-    public void setcategoryId(int categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    public void setSubCategory(String subCategory) {
-        this.subCategory = subCategory;
     }
 
     public void setProductName(String productName) {
@@ -93,19 +86,6 @@ public class Products {
 
     public void setProdSpecs(Object prodSpecs) {
         this.prodSpecs = prodSpecs;
-    }
-
-
-    public String getCategory() {
-        return category;
-    }
-
-    public int getCategoryId() {
-        return categoryId;
-    }
-
-    public String getSubCategory() {
-        return subCategory;
     }
 
     public String getProductName() {

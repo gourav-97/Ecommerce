@@ -18,14 +18,14 @@ public class ProductsRepositoryCustomImpl implements ProductsRepositoryCustom{
     public ProductsRepositoryCustomImpl(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
     }
-    public List<Products> getSubCategories(String category)
-    {
-        Query query = new Query();
-        query.addCriteria(Criteria.where("category").is(category));
-        List<Products> subcategories =
-                mongoTemplate.findDistinct(query,"subCategory","Products",Products.class,Products.class);
-        return subcategories;
-    };
-
+//    public List<Products> getSubCategories(String category)
+//    {
+//        Query query = new Query();
+//        query.addCriteria(Criteria.where("category").is(category));
+//        List<Products> subcategories =
+//                mongoTemplate.findDistinct(query,"subCategory","Products",Products.class,Products.class);
+//        return subcategories;
+//    };
+//
 
 }
