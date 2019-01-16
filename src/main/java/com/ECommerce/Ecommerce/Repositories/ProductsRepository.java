@@ -1,5 +1,6 @@
 package com.ECommerce.Ecommerce.Repositories;
 
+import com.ECommerce.Ecommerce.Models.Product;
 import com.ECommerce.Ecommerce.Models.Products;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -15,8 +16,9 @@ public interface ProductsRepository extends MongoRepository<Products,String> {
 //
 //    Products findBy_id(String id);
 //
-//    List<Products> findBycategory(String name);
-//
+Products findByproductId(String productId);
+Products findByProductId(String productId);
+////
 //    @Query(fields = "{'subCategory':1}")
 //    List<Products> findBysubCategory(String name);
 //

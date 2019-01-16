@@ -27,6 +27,19 @@ public class Product {
 
     }
 
+    public Product(@NotNull(message = "Cannot be NUll") String category, String subCategory, String productName, @NotNull(message = "Product Id can not be Null") String productId, String brand, int price, String desc, int quantity, Object genFeatures, Object prodSpecs) {
+        this.category = category;
+        this.subCategory = subCategory;
+        this.productName = productName;
+        this.productId = productId;
+        this.brand = brand;
+        this.price = price;
+        this.desc = desc;
+        this.quantity = quantity;
+        this.genFeatures = genFeatures;
+        this.prodSpecs = prodSpecs;
+    }
+
     public Product(@NotNull(message = "Cannot be NUll") String category, ObjectId categoryId, String subCategory, ObjectId subCategoryId, String productName, @NotNull(message = "Product Id can not be Null") String productId, String brand, int price, String desc, int quantity, Object genFeatures, Object prodSpecs) {
         this.category = category;
         this.categoryId = categoryId;

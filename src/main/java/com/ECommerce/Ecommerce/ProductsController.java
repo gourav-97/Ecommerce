@@ -31,9 +31,14 @@ public class ProductsController {
         return "Welcome To The Site";
     }
 
-    @RequestMapping("/all")
+    @RequestMapping("/products")
     public List<Product> ShowAll() {
         return productsService.getAllProduct();
+    }
+
+    @RequestMapping("/products/{productId}")
+    public Product ShowById(@PathVariable String productId) {
+        return productsService.getByProductId(productId);
     }
 
     @RequestMapping("/categories")
@@ -44,12 +49,7 @@ public class ProductsController {
     public List<Cat> Getsubcategories(@PathVariable ObjectId categoryId) {
         return categoryService.getsubCategories(categoryId);
     }
-//
-//    @RequestMapping("/categories/{category}/{subcategory}")
-//    public List<Products> Getproducts(@PathVariable String category,@PathVariable String subcategory) {
-//        return productsRepository.findBysubCategory(subcategory);
-//    }
-//
+
 //    @RequestMapping("/product")
 //    public List<Products> getProducts() {
 //        return productsRepository.findAll();
