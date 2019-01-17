@@ -2,6 +2,7 @@ package com.ECommerce.Ecommerce.Service;
 
 import com.ECommerce.Ecommerce.Models.Category;
 import com.ECommerce.Ecommerce.Models.Product;
+import com.ECommerce.Ecommerce.Models.ProductNotFoundException;
 import com.ECommerce.Ecommerce.Models.Products;
 import com.ECommerce.Ecommerce.Repositories.CategoryRepository;
 import com.ECommerce.Ecommerce.Repositories.ProductsRepository;
@@ -39,8 +40,13 @@ public class ProductsService {
         }
         return product;
     }
-    public Product getByProductId(String productId){
+    public Product getByProductId(String productId) throws ProductNotFoundException {
         Products prod = productsRepository.findByproductId(productId);
+
+        if(prod==null) {
+            throw new ProductNotFoundException("There is no product belonging to productID "+productId);
+        }
+
         String subCategoryName = categoryRepository.findBy_id(prod.getParentId()).getCategoryName();
         String subCategoryId = categoryRepository.findBycategoryName(subCategoryName).get_id();
         String subCategoryParentId = categoryRepository.findBy_id(subCategoryId).getParentId();
@@ -51,6 +57,7 @@ public class ProductsService {
         String categoryId = categoryRepository.findBycategoryName(categoryName).get_id();
 
         Product product = new Product(categoryName,categoryId,subCategoryName,subCategoryId,prod.getProductName(),prod.getProductId(),prod.getBrand(),prod.getPrice(),prod.getDesc(),prod.getQuantity(),prod.getGenFeatures(),prod.getProdSpecs());
+
         return product;
     }
 

@@ -1,10 +1,7 @@
 package com.ECommerce.Ecommerce.Service;
 
 
-import com.ECommerce.Ecommerce.Models.Category;
-import com.ECommerce.Ecommerce.Models.Cat;
-import com.ECommerce.Ecommerce.Models.Product;
-import com.ECommerce.Ecommerce.Models.Products;
+import com.ECommerce.Ecommerce.Models.*;
 import com.ECommerce.Ecommerce.Repositories.CategoryRepository;
 import com.ECommerce.Ecommerce.Repositories.ProductsRepository;
 import org.bson.types.ObjectId;
@@ -54,8 +51,7 @@ public class CategoryService {
         return subCategories;
     }
 
-    public List<Product> getProductsInSubCat(String categoryId,String subCategoryId)
-    {
+    public List<Product> getProductsInSubCat(String categoryId,String subCategoryId) throws ProductNotFoundException {
         List<Product> products = new ArrayList<>();
 
         List<Products> productByParentId = productsRepository.findByparentId(subCategoryId);

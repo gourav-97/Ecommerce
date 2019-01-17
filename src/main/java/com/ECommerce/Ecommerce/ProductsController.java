@@ -1,6 +1,7 @@
 package com.ECommerce.Ecommerce;
 import com.ECommerce.Ecommerce.Models.Product;
 import com.ECommerce.Ecommerce.Models.Cat;
+import com.ECommerce.Ecommerce.Models.ProductNotFoundException;
 import com.ECommerce.Ecommerce.Repositories.ProductsRepository;
 import com.ECommerce.Ecommerce.Service.CategoryService;
 import com.ECommerce.Ecommerce.Service.ProductsService;
@@ -9,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import javax.xml.ws.http.HTTPException;
 import java.util.List;
 
 @RestController
@@ -38,9 +41,18 @@ public class ProductsController {
         return productsService.getAllProduct();
     }
 
+
     @RequestMapping("/products/{productId}")
-    public Product showById(@PathVariable String productId) {
-        return productsService.getByProductId(productId);
+    public Product showById (@PathVariable String productId) //throws ProductNotFoundException
+    {
+       try {
+
+            return productsService.getByProductId(productId);
+        } catch (ProductNotFoundException pne){
+          pne.printStackTrace();
+          String url="http://localhost:8080/categories";
+          throw new HTTPException(404);
+        }
     }
 
     @RequestMapping("/categories")
@@ -53,10 +65,14 @@ public class ProductsController {
 
         return categoryService.getSubCategories(categoryId);
     }
+    @RequestMapping("/categories/{categoryId}/products")
+    public List<Cat> getProductsByCategory(@PathVariable String categoryId) {
+
+        return categoryService.getSubCategories(categoryId);
+    }
 
     @RequestMapping("/categories/{categoryId}/{subCategoryId}")
-    public List<Product> getProduct(@PathVariable String categoryId,@PathVariable String subCategoryId) {
-        System.out.println("Here");
+    public List<Product> getProduct(@PathVariable String categoryId,@PathVariable String subCategoryId) throws ProductNotFoundException {
         return categoryService.getProductsInSubCat(categoryId,subCategoryId);
     }
 
