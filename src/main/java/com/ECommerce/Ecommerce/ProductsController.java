@@ -66,9 +66,9 @@ public class ProductsController {
         return categoryService.getSubCategories(categoryId);
     }
     @RequestMapping("/categories/{categoryId}/products")
-    public List<Cat> getProductsByCategory(@PathVariable String categoryId) {
+    public List<Product> getProductsByCategory(@PathVariable String categoryId) {
 
-        return categoryService.getSubCategories(categoryId);
+        return productsService.getProductByCategory(categoryId);
     }
 
     @RequestMapping("/categories/{categoryId}/{subCategoryId}")
@@ -76,8 +76,6 @@ public class ProductsController {
         return categoryService.getProductsInSubCat(categoryId,subCategoryId);
     }
 
-
-    //iss ko porjectand categry repo se lene hai
 
 //    @RequestMapping(method = RequestMethod.POST, value = "/products")
 //    public String addProduct(@RequestBody @Valid Product product){

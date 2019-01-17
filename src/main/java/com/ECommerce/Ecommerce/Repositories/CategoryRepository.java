@@ -15,8 +15,9 @@ public interface CategoryRepository extends MongoRepository<Category,String> {
     @Query(fields = "{'_id':1}")
     Category findBycategoryName(String name);
 
-//    @Query(fields = "{'categoryName':1}")
-    Category findBy_id(String oId);
+
+    Category findBy_id(String _id);
+
     @Query(value = "{'parentId':null}")
     List<Category> findCategoryName();
 

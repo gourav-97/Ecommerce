@@ -3,6 +3,7 @@ package com.ECommerce.Ecommerce.Models;
 import javax.validation.constraints.NotNull;
 
 import java.lang.String;
+
 public class Product {
 
     @NotNull(message = "Cannot be NUll")

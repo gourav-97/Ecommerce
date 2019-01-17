@@ -1,15 +1,13 @@
 package com.ECommerce.Ecommerce.Service;
 
-import com.ECommerce.Ecommerce.Models.Category;
-import com.ECommerce.Ecommerce.Models.Product;
-import com.ECommerce.Ecommerce.Models.ProductNotFoundException;
-import com.ECommerce.Ecommerce.Models.Products;
+import com.ECommerce.Ecommerce.Models.*;
 import com.ECommerce.Ecommerce.Repositories.CategoryRepository;
 import com.ECommerce.Ecommerce.Repositories.ProductsRepository;
 import com.ECommerce.Ecommerce.Repositories.ProductsRepositoryCustom;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -40,6 +38,7 @@ public class ProductsService {
         }
         return product;
     }
+
     public Product getByProductId(String productId) throws ProductNotFoundException {
         Products prod = productsRepository.findByproductId(productId);
 
@@ -61,4 +60,20 @@ public class ProductsService {
         return product;
     }
 
+    public List<Product> getProductByCategory(String categoryId)
+    {
+        Category category = categoryRepository.findBy_id(categoryId);
+        List<Category> subCategories = categoryRepository.findByparentId(categoryId);
+        List<Product> products = new ArrayList<>();
+        for(Category subCategoryNew : subCategories)
+        {
+            List<Products> product = productsRepository.findByparentId(subCategoryNew.get_id());
+            for(Products prod: product)
+            {
+                Product newProduct = new Product(category.getCategoryName(),category.get_id(),subCategoryNew.getCategoryName(),subCategoryNew.get_id(),prod.getProductName(),prod.getProductId(),prod.getBrand(),prod.getPrice(),prod.getDesc(),prod.getQuantity(),prod.getGenFeatures(),prod.getProdSpecs());
+                products.add(newProduct);
+            }
+        }
+        return products;
+    }
 }

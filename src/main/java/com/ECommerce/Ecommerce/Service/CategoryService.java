@@ -4,13 +4,11 @@ package com.ECommerce.Ecommerce.Service;
 import com.ECommerce.Ecommerce.Models.*;
 import com.ECommerce.Ecommerce.Repositories.CategoryRepository;
 import com.ECommerce.Ecommerce.Repositories.ProductsRepository;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -27,8 +25,7 @@ public class CategoryService {
         this.productsRepository = productsRepository;
     }
 
-    public List<Cat> getAllCategories()
-    {
+    public List<Cat> getAllCategories() {
         List<Cat> categories = new ArrayList<>();
 
         List<Category> category = categoryRepository.findCategoryName();
@@ -55,9 +52,7 @@ public class CategoryService {
         List<Product> products = new ArrayList<>();
 
         List<Products> productByParentId = productsRepository.findByparentId(subCategoryId);
-        System.out.println(productByParentId);
         for(Products prod: productByParentId) {
-            System.out.println(prod.getProductName()+" "+prod.getProductId());
             products.add(productsService.getByProductId(prod.getProductId()));
         }
         return products;
