@@ -13,21 +13,22 @@ public class Category
     @Id
     private ObjectId _id;
     private String categoryName;
-    private ObjectId parentId;
+    private String parentId;
     private String desc;
     private String picURL;
 
     public Category(){}
 
-    public Category(ObjectId _id, String categoryName, ObjectId parentId, String desc, String picURL) {
+    public Category(ObjectId _id, String categoryName, String parentId, String desc, String picURL) {
         this.categoryName = categoryName;
         this.parentId = parentId;
         this.desc = desc;
         this.picURL = picURL;
     }
 
-    public ObjectId get_id() {
-        return _id;
+    public String get_id() {
+//        System.out.println(_id);
+        return _id.toString();
     }
 
     public void set_id(ObjectId _id) {
@@ -42,11 +43,11 @@ public class Category
         this.categoryName = categoryName;
     }
 
-    public ObjectId getParentId() {
+    public String getParentId() {
         return parentId;
     }
 
-    public void setParentId(ObjectId parentId) {
+    public void setParentId(String parentId) {
         this.parentId = parentId;
     }
 
@@ -64,5 +65,10 @@ public class Category
 
     public void setPicURL(String picURL) {
         this.picURL = picURL;
+    }
+
+    @Override
+    public String toString() {
+        return "iski id hai - " + this.get_id();
     }
 }

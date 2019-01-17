@@ -7,8 +7,10 @@ import com.ECommerce.Ecommerce.Service.ProductsService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -32,38 +34,37 @@ public class ProductsController {
     }
 
     @RequestMapping("/products")
-    public List<Product> ShowAll() {
+    public List<Product> showAll() {
         return productsService.getAllProduct();
     }
 
     @RequestMapping("/products/{productId}")
-    public Product ShowById(@PathVariable String productId) {
+    public Product showById(@PathVariable String productId) {
         return productsService.getByProductId(productId);
     }
 
     @RequestMapping("/categories")
-    public List<Cat> Getcategories() {
+    public List<Cat> getCategories() {
         return categoryService.getAllCategories();
     }
+
     @RequestMapping("/categories/{categoryId}")
-    public List<Cat> Getsubcategories(@PathVariable ObjectId categoryId) {
-        return categoryService.getsubCategories(categoryId);
+    public List<Cat> getSubCategories(@PathVariable String categoryId) {
+
+        return categoryService.getSubCategories(categoryId);
     }
 
-//    @RequestMapping("/product")
-//    public List<Products> getProducts() {
-//        return productsRepository.findAll();
-//    }
-//
-//    @RequestMapping("/product/{productid}")
-//    public List<Products> getProductsById(@PathVariable String productid) {
-//        return productsRepository.findByproductId(productid);
-//    }
-//
+    @RequestMapping("/categories/{categoryId}/{subCategoryId}")
+    public List<Product> getProduct(@PathVariable String categoryId,@PathVariable String subCategoryId) {
+        System.out.println("Here");
+        return categoryService.getProductsInSubCat(categoryId,subCategoryId);
+    }
+
+
+    //iss ko porjectand categry repo se lene hai
+
 //    @RequestMapping(method = RequestMethod.POST, value = "/products")
-//    public String addProduct(@RequestBody @Valid Products product){
-//        product.set_id(ObjectId.get());
-//        productsRepository.save(product);
+//    public String addProduct(@RequestBody @Valid Product product){
 //        return product.getProductId();
 //    }
 

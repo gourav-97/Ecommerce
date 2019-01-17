@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 public class Products {
     @Id
     private ObjectId _id;
-    private ObjectId parentId;
+    private String parentId;
     private String productName;
     @NotNull(message = "Product Id can not be Null")
     private String productId;
@@ -27,7 +27,7 @@ public class Products {
 
     }
 
-    public Products(ObjectId _id, ObjectId parentId, String productName, @NotNull(message = "Product Id can not be Null") String productId, String brand, int price, String desc, int quantity, Object genFeatures, Object prodSpecs) {
+    public Products(ObjectId _id,String parentId, String productName, @NotNull(message = "Product Id can not be Null") String productId, String brand, int price, String desc, int quantity, Object genFeatures, Object prodSpecs) {
         this._id = _id;
         this.parentId = parentId;
         this.productName = productName;
@@ -40,20 +40,12 @@ public class Products {
         this.prodSpecs = prodSpecs;
     }
 
-    public ObjectId getParentId() {
+    public String getParentId() {
         return parentId;
     }
 
-    public void setParentId(ObjectId parentId) {
+    public void setParentId(String parentId) {
         this.parentId = parentId;
-    }
-
-    public String get_id() {
-        return _id.toHexString();
-    }
-
-    public void set_id(ObjectId _id) {
-        this._id = _id;
     }
 
     public void setProductName(String productName) {
@@ -118,5 +110,13 @@ public class Products {
 
     public Object getProdSpecs() {
         return prodSpecs;
+    }
+
+    public ObjectId get_id() {
+        return _id;
+    }
+
+    public void set_id(ObjectId _id) {
+        this._id = _id;
     }
 }

@@ -1,18 +1,15 @@
 package com.ECommerce.Ecommerce.Models;
 
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import javax.validation.constraints.NotNull;
 
+import java.lang.String;
 public class Product {
 
     @NotNull(message = "Cannot be NUll")
-    private  String category;
-    private ObjectId categoryId;
+    private String category;
+    private String categoryId;
     private String subCategory;
-    private ObjectId subCategoryId;
+    private String subCategoryId;
     private String productName;
     @NotNull(message = "Product Id can not be Null")
     private String productId;
@@ -27,20 +24,7 @@ public class Product {
 
     }
 
-    public Product(@NotNull(message = "Cannot be NUll") String category, String subCategory, String productName, @NotNull(message = "Product Id can not be Null") String productId, String brand, int price, String desc, int quantity, Object genFeatures, Object prodSpecs) {
-        this.category = category;
-        this.subCategory = subCategory;
-        this.productName = productName;
-        this.productId = productId;
-        this.brand = brand;
-        this.price = price;
-        this.desc = desc;
-        this.quantity = quantity;
-        this.genFeatures = genFeatures;
-        this.prodSpecs = prodSpecs;
-    }
-
-    public Product(@NotNull(message = "Cannot be NUll") String category, ObjectId categoryId, String subCategory, ObjectId subCategoryId, String productName, @NotNull(message = "Product Id can not be Null") String productId, String brand, int price, String desc, int quantity, Object genFeatures, Object prodSpecs) {
+    public Product(@NotNull(message = "Cannot be NUll") String category, String categoryId, String subCategory, String subCategoryId, String productName, @NotNull(message = "Product Id can not be Null") String productId, String brand, int price, String desc, int quantity, Object genFeatures, Object prodSpecs) {
         this.category = category;
         this.categoryId = categoryId;
         this.subCategory = subCategory;
@@ -63,11 +47,11 @@ public class Product {
         this.category = category;
     }
 
-    public ObjectId getCategoryId() {
+    public String getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(ObjectId categoryId) {
+    public void setCategoryId(String categoryId) {
         this.categoryId = categoryId;
     }
 
@@ -79,11 +63,11 @@ public class Product {
         this.subCategory = subCategory;
     }
 
-    public ObjectId getSubCategoryId() {
+    public String getSubCategoryId() {
         return subCategoryId;
     }
 
-    public void setSubCategoryId(ObjectId subCategoryId) {
+    public void setSubCategoryId(String subCategoryId) {
         this.subCategoryId = subCategoryId;
     }
 

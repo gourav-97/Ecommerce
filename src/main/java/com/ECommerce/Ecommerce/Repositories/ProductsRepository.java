@@ -17,7 +17,9 @@ public interface ProductsRepository extends MongoRepository<Products,String> {
 //    Products findBy_id(String id);
 //
 Products findByproductId(String productId);
-Products findByProductId(String productId);
+List<Products> findByparentId(String parentId);
+
+//Products findByProductId(String productId);
 ////
 //    @Query(fields = "{'subCategory':1}")
 //    List<Products> findBysubCategory(String name);
