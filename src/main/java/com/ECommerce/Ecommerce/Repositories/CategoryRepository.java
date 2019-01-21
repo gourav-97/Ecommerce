@@ -15,14 +15,11 @@ public interface CategoryRepository extends MongoRepository<Category,String> {
     @Query(fields = "{'_id':1}")
     Category findBycategoryName(String name);
 
-
-    Category findBy_id(String _id);
-
     @Query(value = "{'parentId':null}")
     List<Category> findCategoryName();
 
     @Query(fields = "{'parentId':0}")
     List<Category> findByparentId(String parentId);
 
-
+    Category findBy_id(String _id);
 }

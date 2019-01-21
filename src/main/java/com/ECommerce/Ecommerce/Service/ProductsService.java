@@ -23,9 +23,15 @@ public class ProductsService {
         this.productsRepositoryCustom = productsRepositoryCustom;
     }
 
-    public List<Product> getAllProduct(){
+    public List<Product> getAllProduct() throws ProductNotFoundException{
         List<Product> product = new ArrayList<>();
         List<Products> products = productsRepository.findAll();
+
+        if(products==null)
+        {
+            throw new ProductNotFoundException("There are 0 products in database");
+        }
+
         for(Products prod:products) {
             Category subCategory = categoryRepository.findBy_id(prod.getParentId());
             String subCategoryName = subCategory.getCategoryName();
@@ -50,9 +56,6 @@ public class ProductsService {
         String subCategoryId = categoryRepository.findBycategoryName(subCategoryName).get_id();
         String subCategoryParentId = categoryRepository.findBy_id(subCategoryId).getParentId();
         String categoryName = categoryRepository.findBy_id(subCategoryParentId).getCategoryName();
-
-
-
         String categoryId = categoryRepository.findBycategoryName(categoryName).get_id();
 
         Product product = new Product(categoryName,categoryId,subCategoryName,subCategoryId,prod.getProductName(),prod.getProductId(),prod.getBrand(),prod.getPrice(),prod.getDesc(),prod.getQuantity(),prod.getGenFeatures(),prod.getProdSpecs());
@@ -60,10 +63,14 @@ public class ProductsService {
         return product;
     }
 
-    public List<Product> getProductByCategory(String categoryId)
-    {
+    public List<Product> getProductByCategory(String categoryId) throws CategoryNotFoundException {
+
         Category category = categoryRepository.findBy_id(categoryId);
         List<Category> subCategories = categoryRepository.findByparentId(categoryId);
+
+        if(category==null||subCategories==null)
+            throw new CategoryNotFoundException("There are no categories/subcategories in database");
+
         List<Product> products = new ArrayList<>();
         for(Category subCategoryNew : subCategories)
         {

@@ -11,23 +11,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 @Repository
 public interface ProductsRepository extends MongoRepository<Products,String> {
-
-//    List<Products> findAll();
-//
-//    Products findBy_id(String id);
-//
-Products findByproductId(String productId);
-List<Products> findByparentId(String parentId);
-
-//Products findByProductId(String productId);
-////
-//    @Query(fields = "{'subCategory':1}")
-//    List<Products> findBysubCategory(String name);
-//
-//    List<Products> findByproductId(String name);
-//
-//    @Query(value = "{'distinct':'Products','key':'category'}")
-////    @Query(fields = "{'category':1}")
-//    List<Products> findcategory();
-//
+    Products findByproductId(String productId);
+    List<Products> findByparentId(String parentId);
 }
