@@ -1,4 +1,4 @@
-package com.ECommerce.Ecommerce.Models;
+package com.ecommerce.ecommerce.models;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -13,6 +13,7 @@ public class Products {
     private ObjectId _id;
     private String parentId;
     private String productName;
+    @Indexed(unique=true)
     @NotNull(message = "Product Id can not be Null")
     private String productId;
     private String brand;
@@ -27,7 +28,7 @@ public class Products {
 
     }
 
-    public Products(ObjectId _id,String parentId, String productName, @NotNull(message = "Product Id can not be Null") String productId, String brand, int price, String desc, int quantity, Object genFeatures, Object prodSpecs) {
+    public Products(ObjectId _id, String parentId, String productName, @NotNull(message = "Product Id can not be Null") String productId, String brand, int price, String desc, int quantity, Object genFeatures, Object prodSpecs) {
         this._id = _id;
         this.parentId = parentId;
         this.productName = productName;

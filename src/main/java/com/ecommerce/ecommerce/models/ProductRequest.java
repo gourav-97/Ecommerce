@@ -1,18 +1,8 @@
-package com.ECommerce.Ecommerce.Models;
+package com.ecommerce.ecommerce.models;
 
-import javax.validation.constraints.NotNull;
-
-import java.lang.String;
-
-public class Product {
-
-    @NotNull(message = "Cannot be NUll")
-    private String category;
-    private String categoryId;
-    private String subCategory;
-    private String subCategoryId;
+public class ProductRequest {
+    private String parentId;
     private String productName;
-    @NotNull(message = "Product Id can not be Null")
     private String productId;
     private String brand;
     private int price;
@@ -21,15 +11,11 @@ public class Product {
     private Object genFeatures;
     private Object prodSpecs;
 
-    public Product() {
-
+    public ProductRequest() {
     }
 
-    public Product(@NotNull(message = "Cannot be NUll") String category, String categoryId, String subCategory, String subCategoryId, String productName, @NotNull(message = "Product Id can not be Null") String productId, String brand, int price, String desc, int quantity, Object genFeatures, Object prodSpecs) {
-        this.category = category;
-        this.categoryId = categoryId;
-        this.subCategory = subCategory;
-        this.subCategoryId = subCategoryId;
+    public ProductRequest(String parentId, String productName, String productId, String brand, int price, String desc, int quantity, Object genFeatures, Object prodSpecs) {
+        this.parentId = parentId;
         this.productName = productName;
         this.productId = productId;
         this.brand = brand;
@@ -40,36 +26,12 @@ public class Product {
         this.prodSpecs = prodSpecs;
     }
 
-    public String getCategory() {
-        return category;
+    public String getParentId() {
+        return parentId;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(String categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    public String getSubCategory() {
-        return subCategory;
-    }
-
-    public void setSubCategory(String subCategory) {
-        this.subCategory = subCategory;
-    }
-
-    public String getSubCategoryId() {
-        return subCategoryId;
-    }
-
-    public void setSubCategoryId(String subCategoryId) {
-        this.subCategoryId = subCategoryId;
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
     }
 
     public String getProductName() {

@@ -1,4 +1,4 @@
-package com.ECommerce.Ecommerce;
+package com.ecommerce.ecommerce;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

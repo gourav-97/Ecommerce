@@ -1,10 +1,11 @@
-package com.ECommerce.Ecommerce.Service;
+package com.ecommerce.ecommerce.service;
 
 
-import com.ECommerce.Ecommerce.Models.*;
-import com.ECommerce.Ecommerce.Repositories.CategoryRepository;
-import com.ECommerce.Ecommerce.Repositories.ProductsRepository;
+import com.ecommerce.ecommerce.models.*;
+import com.ecommerce.ecommerce.repositories.CategoryRepository;
+import com.ecommerce.ecommerce.repositories.ProductsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +20,23 @@ public class CategoryService {
     ProductsRepository productsRepository;
     @Autowired
     ProductsService productsService;
+
+    @Lazy @Autowired
+    CategoryService categoryService;
+
     public CategoryService(MongoTemplate mongoTemplate, CategoryRepository categoryRepository, ProductsRepository productsRepository) {
         this.mongoTemplate = mongoTemplate;
         this.categoryRepository = categoryRepository;
         this.productsRepository = productsRepository;
+    }
+
+    public String addCategory(CategoryRequest categoryDetails) throws CategoryNotInsertedException {
+
+        Category categoryObject = new Category(null,categoryDetails.getCategoryName(),categoryDetails.getParentId(),categoryDetails.getDesc(),categoryDetails.getPicURL());
+        Category c=mongoTemplate.insert(categoryObject,"Category");
+        if(c==null)
+            throw new CategoryNotInsertedException("Category is not inserted");
+        return categoryObject.get_id();
     }
 
     public List<Cat> getAllCategories() throws CategoryNotFoundException{
@@ -31,7 +45,7 @@ public class CategoryService {
 
         List<Category> category = categoryRepository.findCategoryName();
         if(category==null)
-            throw new CategoryNotFoundException("There are 0 categories in database");
+                throw new CategoryNotFoundException("There are 0 categories in database");
         for(Category c:category)
         {
             Cat newCategory = new Cat(c.getCategoryName(),c.get_id(),c.getDesc(),c.getPicURL());
@@ -42,9 +56,8 @@ public class CategoryService {
 
     public List<Cat> getSubCategories(String categoryId) throws CategoryNotFoundException{
         List<Category> categories = categoryRepository.findByparentId(categoryId);
-        if(categories==null)
+        if(categories.isEmpty())
             throw new CategoryNotFoundException("There are 0 categories in database");
-
         List<Cat> subCategories = new ArrayList<>();
         for(Category c:categories)
         {
@@ -54,10 +67,11 @@ public class CategoryService {
         return subCategories;
     }
 
-    public List<Product> getProductsInSubCat(String categoryId,String subCategoryId) throws CategoryNotFoundException,ProductNotFoundException {
+    public List<Product> getProductsInSubCat(String subCategoryId) throws CategoryNotFoundException, ProductNotFoundException {
         List<Product> products = new ArrayList<>();
 
         List<Products> productByParentId = productsRepository.findByparentId(subCategoryId);
+        System.out.println(productByParentId);
         if(productByParentId==null)
             throw new CategoryNotFoundException("There are 0 categories in database");
         for(Products prod: productByParentId) {

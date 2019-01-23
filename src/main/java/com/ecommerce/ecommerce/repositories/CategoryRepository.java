@@ -1,8 +1,6 @@
-package com.ECommerce.Ecommerce.Repositories;
+package com.ecommerce.ecommerce.repositories;
 
-import com.ECommerce.Ecommerce.Models.Category;
-import com.ECommerce.Ecommerce.Models.Products;
-import org.bson.types.ObjectId;
+import com.ecommerce.ecommerce.models.Category;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;

@@ -1,26 +1,17 @@
-package com.ECommerce.Ecommerce.Models;
+package com.ecommerce.ecommerce.models;
 
-import org.bson.types.ObjectId;
-
-public class Cat {
+public class CategoryRequest {
     private String categoryName;
-    private String categoryId;
+    private String parentId;
     private String desc;
     private String picURL;
-    public Cat()
-            {
 
-            }
+    public CategoryRequest() {
+    }
 
-//    public Cat(String categoryName, String desc, String picURL) {
-//        this.categoryName = categoryName;
-//        this.desc = desc;
-//        this.picURL = picURL;
-//    }
-//
-    public Cat(String categoryName, String categoryId, String desc, String picURL) {
+    public CategoryRequest(String categoryName, String parentId, String desc, String picURL) {
         this.categoryName = categoryName;
-        this.categoryId = categoryId;
+        this.parentId = parentId;
         this.desc = desc;
         this.picURL = picURL;
     }
@@ -33,12 +24,12 @@ public class Cat {
         this.categoryName = categoryName;
     }
 
-    public String getCategoryId() {
-        return categoryId;
+    public String getParentId() {
+        return parentId;
     }
 
-    public void setCategoryId(String categoryId) {
-        this.categoryId = categoryId;
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
     }
 
     public String getDesc() {

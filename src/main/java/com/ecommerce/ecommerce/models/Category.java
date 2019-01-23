@@ -1,11 +1,8 @@
-package com.ECommerce.Ecommerce.Models;
+package com.ecommerce.ecommerce.models;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import javax.validation.constraints.NotNull;
 
 @Document(collection="Category")
 public class Category
@@ -27,7 +24,6 @@ public class Category
     }
 
     public String get_id() {
-//        System.out.println(_id);
         return _id.toString();
     }
 
