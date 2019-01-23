@@ -15,7 +15,7 @@ public class Swagger{
     public Docket apiDocket() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.ECommerce.Ecommerce"))
+                .apis(RequestHandlerSelectors.basePackage("com.ecommerce.ecommerce"))
                 .paths(PathSelectors.any())
                 .build();
     }

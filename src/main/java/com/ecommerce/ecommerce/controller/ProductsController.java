@@ -39,7 +39,7 @@ public class ProductsController {
     }
 
     @RequestMapping(method=RequestMethod.GET,value="/products/{productId}")
-    public Product showById (@PathVariable String productId) throws ProductNotFoundException {
+    public List<Product> showById (@PathVariable List<String> productId) throws ProductNotFoundException {
             return productsService.getByProductId(productId);
     }
 
@@ -56,8 +56,7 @@ public class ProductsController {
     @RequestMapping(method=RequestMethod.GET,value="/categories/{categoryId}/products")
     public List<Product> getProductsByCategory(@PathVariable String categoryId) throws CategoryNotFoundException {
            List<Product> products = productsService.getProductByCategory(categoryId);
-           System.out.println(products.size());
-               return products;
+           return products;
     }
 
     @RequestMapping(method=RequestMethod.GET,value="/categories/{categoryId}/{subCategoryId}")

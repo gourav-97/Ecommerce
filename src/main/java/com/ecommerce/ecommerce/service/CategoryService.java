@@ -71,7 +71,6 @@ public class CategoryService {
         List<Product> products = new ArrayList<>();
 
         List<Products> productByParentId = productsRepository.findByparentId(subCategoryId);
-        System.out.println(productByParentId);
         if(productByParentId==null)
             throw new CategoryNotFoundException("There are 0 categories in database");
         for(Products prod: productByParentId) {
