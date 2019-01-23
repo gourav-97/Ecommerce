@@ -4,7 +4,12 @@ import com.ecommerce.ecommerce.models.*;
 import com.ecommerce.ecommerce.repositories.CategoryRepository;
 import com.ecommerce.ecommerce.repositories.ProductsRepository;
 import com.ecommerce.ecommerce.repositories.ProductsRepositoryCustom;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,6 +21,10 @@ public class ProductsService {
     CategoryRepository categoryRepository;
     ProductsRepository productsRepository;
     ProductsRepositoryCustom productsRepositoryCustom;
+
+    @Autowired
+    MongoTemplate mongoTemplate;
+
 
     public ProductsService(CategoryRepository categoryRepository, ProductsRepository productsRepository, ProductsRepositoryCustom productsRepositoryCustom) {
         this.categoryRepository = categoryRepository;
@@ -109,5 +118,23 @@ public class ProductsService {
             }
         }
         return products;
+    }
+
+    public String reduceQuantity(List<ProductDetails> productDetails) throws ProductNotFoundException {
+        for(ProductDetails p:productDetails)
+        {
+            //String prodtId=p.getProductId();
+            //int quantity=p.getQuantity();
+            Query query=new Query();
+            query.addCriteria((Criteria.where("productId").is(p.getProductId())));
+            Products prod=productsRepository.findByproductId(p.getProductId());
+            if(prod==null)
+                throw new ProductNotFoundException("there is no product corresponding to productId "+p.getProductId());
+            int initialQuantity=prod.getQuantity();
+            Update update=new Update();
+            update.set("quantity",initialQuantity-p.getQuantity());
+            mongoTemplate.updateFirst(query,update,Products.class,"Products");
+        }
+        return "quantity updated";
     }
 }
