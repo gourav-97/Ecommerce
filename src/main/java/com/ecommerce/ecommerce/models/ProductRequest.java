@@ -10,11 +10,12 @@ public class ProductRequest {
     private int quantity;
     private Object genFeatures;
     private Object prodSpecs;
+    private int popularScore;
 
     public ProductRequest() {
     }
 
-    public ProductRequest(String parentId, String productName, String productId, String brand, int price, String desc, int quantity, Object genFeatures, Object prodSpecs) {
+    public ProductRequest(String parentId, String productName, String productId, String brand, int price, String desc, int quantity, Object genFeatures, Object prodSpecs, int popularScore) {
         this.parentId = parentId;
         this.productName = productName;
         this.productId = productId;
@@ -24,6 +25,7 @@ public class ProductRequest {
         this.quantity = quantity;
         this.genFeatures = genFeatures;
         this.prodSpecs = prodSpecs;
+        this.popularScore = popularScore;
     }
 
     public String getParentId() {
@@ -96,5 +98,13 @@ public class ProductRequest {
 
     public void setProdSpecs(Object prodSpecs) {
         this.prodSpecs = prodSpecs;
+    }
+
+    public int getPopularScore() {
+        return popularScore;
+    }
+
+    public void setPopularScore(int popularScore) {
+        this.popularScore = popularScore;
     }
 }

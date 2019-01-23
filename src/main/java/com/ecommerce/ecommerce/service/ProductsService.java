@@ -25,7 +25,7 @@ public class ProductsService {
 
     public String addProduct(ProductRequest productDetails) throws ProductNotInsertedException {
         System.out.println(productDetails.getProductId());
-        Products productsObject =new Products(null,productDetails.getParentId(),productDetails.getProductName(),productDetails.getProductId(),productDetails.getBrand(),productDetails.getPrice(),productDetails.getDesc(),productDetails.getQuantity(),productDetails.getGenFeatures(),productDetails.getProdSpecs());
+        Products productsObject =new Products(null,productDetails.getParentId(),productDetails.getProductName(),productDetails.getProductId(),productDetails.getBrand(),productDetails.getPrice(),productDetails.getDesc(),productDetails.getQuantity(),productDetails.getGenFeatures(),productDetails.getProdSpecs(),productDetails.getPopularScore());
         Products p=productsRepository.insert(productsObject);
         if(p==null)
             throw new ProductNotInsertedException("product was not inserted to database");
@@ -48,7 +48,7 @@ public class ProductsService {
             String subCategoryParentId = subCategory.getParentId();
             String categoryName = categoryRepository.findBy_id(subCategoryParentId).getCategoryName();
             String categoryId = categoryRepository.findBycategoryName(categoryName).get_id();
-            Product p = new Product(categoryName,categoryId,subCategoryName,subCategoryId,prod.getProductName(),prod.getProductId(),prod.getBrand(),prod.getPrice(),prod.getDesc(),prod.getQuantity(),prod.getGenFeatures(),prod.getProdSpecs());
+            Product p = new Product(categoryName,categoryId,subCategoryName,subCategoryId,prod.getProductName(),prod.getProductId(),prod.getBrand(),prod.getPrice(),prod.getDesc(),prod.getQuantity(),prod.getGenFeatures(),prod.getProdSpecs(),prod.getPopularScore());
             product.add(p);
         }
         return product;
@@ -66,7 +66,7 @@ public class ProductsService {
         String categoryName = categoryRepository.findBy_id(subCategoryParentId).getCategoryName();
         String categoryId = categoryRepository.findBycategoryName(categoryName).get_id();
 
-        return new Product(categoryName,categoryId,subCategoryName,subCategoryId,prod.getProductName(),prod.getProductId(),prod.getBrand(),prod.getPrice(),prod.getDesc(),prod.getQuantity(),prod.getGenFeatures(),prod.getProdSpecs());
+        return new Product(categoryName,categoryId,subCategoryName,subCategoryId,prod.getProductName(),prod.getProductId(),prod.getBrand(),prod.getPrice(),prod.getDesc(),prod.getQuantity(),prod.getGenFeatures(),prod.getProdSpecs(),prod.getPopularScore());
     }
 
     public List<Product> getProductByCategory(String categoryId) throws CategoryNotFoundException {
@@ -82,7 +82,7 @@ public class ProductsService {
             List<Products> product = productsRepository.findByparentId(subCategoryNew.get_id());
             for(Products prod: product)
             {
-                Product newProduct = new Product(category.getCategoryName(),category.get_id(),subCategoryNew.getCategoryName(),subCategoryNew.get_id(),prod.getProductName(),prod.getProductId(),prod.getBrand(),prod.getPrice(),prod.getDesc(),prod.getQuantity(),prod.getGenFeatures(),prod.getProdSpecs());
+                Product newProduct = new Product(category.getCategoryName(),category.get_id(),subCategoryNew.getCategoryName(),subCategoryNew.get_id(),prod.getProductName(),prod.getProductId(),prod.getBrand(),prod.getPrice(),prod.getDesc(),prod.getQuantity(),prod.getGenFeatures(),prod.getProdSpecs(),prod.getPopularScore());
                 products.add(newProduct);
             }
         }

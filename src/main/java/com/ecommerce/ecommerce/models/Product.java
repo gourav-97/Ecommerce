@@ -19,12 +19,12 @@ public class Product {
     private int quantity;
     private Object genFeatures;
     private Object prodSpecs;
-
+    private int popularScore;
     public Product() {
 
     }
 
-    public Product(@NotNull(message = "Cannot be NUll") String category, String categoryId, String subCategory, String subCategoryId, String productName, @NotNull(message = "Product Id can not be Null") String productId, String brand, int price, String desc, int quantity, Object genFeatures, Object prodSpecs) {
+    public Product(@NotNull(message = "Cannot be NUll") String category, String categoryId, String subCategory, String subCategoryId, String productName, @NotNull(message = "Product Id can not be Null") String productId, String brand, int price, String desc, int quantity, Object genFeatures, Object prodSpecs, int popularScore) {
         this.category = category;
         this.categoryId = categoryId;
         this.subCategory = subCategory;
@@ -37,6 +37,7 @@ public class Product {
         this.quantity = quantity;
         this.genFeatures = genFeatures;
         this.prodSpecs = prodSpecs;
+        this.popularScore = popularScore;
     }
 
     public String getCategory() {
@@ -133,5 +134,13 @@ public class Product {
 
     public void setProdSpecs(Object prodSpecs) {
         this.prodSpecs = prodSpecs;
+    }
+
+    public int getPopularScore() {
+        return popularScore;
+    }
+
+    public void setPopularScore(int popularScore) {
+        this.popularScore = popularScore;
     }
 }

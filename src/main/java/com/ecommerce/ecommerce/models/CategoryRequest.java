@@ -5,15 +5,17 @@ public class CategoryRequest {
     private String parentId;
     private String desc;
     private String picURL;
+    private int topScore;
 
     public CategoryRequest() {
     }
 
-    public CategoryRequest(String categoryName, String parentId, String desc, String picURL) {
+    public CategoryRequest(String categoryName, String parentId, String desc, String picURL, int topScore) {
         this.categoryName = categoryName;
         this.parentId = parentId;
         this.desc = desc;
         this.picURL = picURL;
+        this.topScore = topScore;
     }
 
     public String getCategoryName() {
@@ -46,5 +48,13 @@ public class CategoryRequest {
 
     public void setPicURL(String picURL) {
         this.picURL = picURL;
+    }
+
+    public int getTopScore() {
+        return topScore;
+    }
+
+    public void setTopScore(int topScore) {
+        this.topScore = topScore;
     }
 }

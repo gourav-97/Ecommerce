@@ -22,13 +22,14 @@ public class Products {
     private int quantity;
     private Object genFeatures;
     private Object prodSpecs;
+    private int popularScore;
 
 
     public Products() {
 
     }
 
-    public Products(ObjectId _id, String parentId, String productName, @NotNull(message = "Product Id can not be Null") String productId, String brand, int price, String desc, int quantity, Object genFeatures, Object prodSpecs) {
+    public Products(ObjectId _id, String parentId, String productName, @NotNull(message = "Product Id can not be Null") String productId, String brand, int price, String desc, int quantity, Object genFeatures, Object prodSpecs, int popularScore) {
         this._id = _id;
         this.parentId = parentId;
         this.productName = productName;
@@ -39,6 +40,15 @@ public class Products {
         this.quantity = quantity;
         this.genFeatures = genFeatures;
         this.prodSpecs = prodSpecs;
+        this.popularScore = popularScore;
+    }
+
+    public ObjectId get_id() {
+        return _id;
+    }
+
+    public void set_id(ObjectId _id) {
+        this._id = _id;
     }
 
     public String getParentId() {
@@ -49,75 +59,75 @@ public class Products {
         this.parentId = parentId;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public void setProductId(String productId) {
-        this.productId = productId;
-    }
-
-    public void setBrand(String brand) {
-        this.brand = brand;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public void setDesc(String desc) {
-        this.desc = desc;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public void setGenFeatures(Object genFeatures) {
-        this.genFeatures = genFeatures;
-    }
-
-    public void setProdSpecs(Object prodSpecs) {
-        this.prodSpecs = prodSpecs;
-    }
-
     public String getProductName() {
         return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     public String getProductId() {
         return productId;
     }
 
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+
     public String getBrand() {
         return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
     }
 
     public int getPrice() {
         return price;
     }
 
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
     public String getDesc() {
         return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
     public int getQuantity() {
         return quantity;
     }
 
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
     public Object getGenFeatures() {
         return genFeatures;
+    }
+
+    public void setGenFeatures(Object genFeatures) {
+        this.genFeatures = genFeatures;
     }
 
     public Object getProdSpecs() {
         return prodSpecs;
     }
 
-    public ObjectId get_id() {
-        return _id;
+    public void setProdSpecs(Object prodSpecs) {
+        this.prodSpecs = prodSpecs;
     }
 
-    public void set_id(ObjectId _id) {
-        this._id = _id;
+    public int getPopularScore() {
+        return popularScore;
+    }
+
+    public void setPopularScore(int popularScore) {
+        this.popularScore = popularScore;
     }
 }

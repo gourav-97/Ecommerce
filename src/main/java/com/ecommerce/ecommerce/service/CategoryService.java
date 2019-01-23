@@ -32,7 +32,7 @@ public class CategoryService {
 
     public String addCategory(CategoryRequest categoryDetails) throws CategoryNotInsertedException {
 
-        Category categoryObject = new Category(null,categoryDetails.getCategoryName(),categoryDetails.getParentId(),categoryDetails.getDesc(),categoryDetails.getPicURL());
+        Category categoryObject = new Category(null,categoryDetails.getCategoryName(),categoryDetails.getParentId(),categoryDetails.getDesc(),categoryDetails.getPicURL(),categoryDetails.getTopScore());
         Category c=mongoTemplate.insert(categoryObject,"Category");
         if(c==null)
             throw new CategoryNotInsertedException("Category is not inserted");
@@ -48,7 +48,7 @@ public class CategoryService {
                 throw new CategoryNotFoundException("There are 0 categories in database");
         for(Category c:category)
         {
-            Cat newCategory = new Cat(c.getCategoryName(),c.get_id(),c.getDesc(),c.getPicURL());
+            Cat newCategory = new Cat(c.getCategoryName(),c.get_id(),c.getDesc(),c.getPicURL(),c.getTopScore());
             categories.add(newCategory);
         }
         return categories;
@@ -61,7 +61,7 @@ public class CategoryService {
         List<Cat> subCategories = new ArrayList<>();
         for(Category c:categories)
         {
-            Cat category = new Cat(c.getCategoryName(),c.get_id(),c.getDesc(),c.getPicURL());
+            Cat category = new Cat(c.getCategoryName(),c.get_id(),c.getDesc(),c.getPicURL(),c.getTopScore());
             subCategories.add(category);
         }
         return subCategories;

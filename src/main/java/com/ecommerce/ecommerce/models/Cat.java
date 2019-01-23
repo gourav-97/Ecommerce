@@ -5,16 +5,18 @@ public class Cat {
     private String categoryId;
     private String desc;
     private String picURL;
-    public Cat()
-            {
+    private int topScore;
 
-            }
+    public Cat() {
 
-    public Cat(String categoryName, String categoryId, String desc, String picURL) {
+    }
+
+    public Cat(String categoryName, String categoryId, String desc, String picURL, int topScore) {
         this.categoryName = categoryName;
         this.categoryId = categoryId;
         this.desc = desc;
         this.picURL = picURL;
+        this.topScore = topScore;
     }
 
     public String getCategoryName() {
@@ -47,5 +49,13 @@ public class Cat {
 
     public void setPicURL(String picURL) {
         this.picURL = picURL;
+    }
+
+    public int getTopScore() {
+        return topScore;
+    }
+
+    public void setTopScore(int topScore) {
+        this.topScore = topScore;
     }
 }

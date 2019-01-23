@@ -13,14 +13,18 @@ public class Category
     private String parentId;
     private String desc;
     private String picURL;
+    private int topScore;
+    public Category(){
 
-    public Category(){}
+    }
 
-    public Category(ObjectId _id, String categoryName, String parentId, String desc, String picURL) {
+    public Category(ObjectId _id, String categoryName, String parentId, String desc, String picURL, int topScore) {
+        this._id = _id;
         this.categoryName = categoryName;
         this.parentId = parentId;
         this.desc = desc;
         this.picURL = picURL;
+        this.topScore = topScore;
     }
 
     public String get_id() {
@@ -63,8 +67,11 @@ public class Category
         this.picURL = picURL;
     }
 
-    @Override
-    public String toString() {
-        return "iski id hai - " + this.get_id();
+    public int getTopScore() {
+        return topScore;
+    }
+
+    public void setTopScore(int topScore) {
+        this.topScore = topScore;
     }
 }
