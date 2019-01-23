@@ -75,4 +75,9 @@ public class ProductsController {
         return validation.addProduct(productDetails);
     }
 
+    @RequestMapping(method=RequestMethod.POST,value="/reduceQuantity")
+    public String reduceQuantity(@RequestBody List<ProductDetails> productDetails) throws ProductNotFoundException {
+        return validation.reduceQuantity(productDetails);
+    }
+
 }
