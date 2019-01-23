@@ -27,13 +27,13 @@ public class Validation
     }
 
     public String addCategory(CategoryRequest categoryDetails) throws CategoryNotInsertedException {
-        if(categoryDetails.getParentId()==null||categoryDetails.getParentId().length()<12)
+        if(categoryDetails.getParentId()!=null && categoryDetails.getParentId().length()<12)
             return "Enter Valid parentId";
         else
             return categoryService.addCategory(categoryDetails);
     }
 
-    public String reduceQuantity(List<ProductDetails> productDetails) throws ProductNotFoundException
+    public String updateQuantity(List<ProductDetails> productDetails) throws ProductNotFoundException
     {
         for(ProductDetails p:productDetails)
         {
@@ -42,6 +42,6 @@ public class Validation
                 return "Send valid productID";
             }
         }
-        return productsService.reduceQuantity(productDetails);
+        return productsService.updateQuantity(productDetails);
     }
 }

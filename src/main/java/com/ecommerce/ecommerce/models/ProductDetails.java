@@ -3,6 +3,7 @@ package com.ecommerce.ecommerce.models;
 public class ProductDetails {
     String productId;
     int quantity;
+    boolean reduce;
 
     public ProductDetails() {
     }
@@ -15,11 +16,21 @@ public class ProductDetails {
         this.quantity = quantity;
     }
 
+    public void setReduce(boolean reduce) {
+        this.reduce = reduce;
+    }
+
     public String getProductId() {
         return productId;
+    }
+
+    public boolean isReduce() {
+        return reduce;
     }
 
     public int getQuantity() {
         return quantity;
     }
+
+
 }

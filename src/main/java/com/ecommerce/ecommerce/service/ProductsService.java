@@ -120,20 +120,23 @@ public class ProductsService {
         return products;
     }
 
-    public String reduceQuantity(List<ProductDetails> productDetails) throws ProductNotFoundException {
-        for(ProductDetails p:productDetails)
+    public String updateQuantity(List<ProductDetails> productDetails) throws ProductNotFoundException {
+        for(ProductDetails product:productDetails)
         {
-            //String prodtId=p.getProductId();
-            //int quantity=p.getQuantity();
-            Query query=new Query();
-            query.addCriteria((Criteria.where("productId").is(p.getProductId())));
-            Products prod=productsRepository.findByproductId(p.getProductId());
-            if(prod==null)
-                throw new ProductNotFoundException("there is no product corresponding to productId "+p.getProductId());
-            int initialQuantity=prod.getQuantity();
-            Update update=new Update();
-            update.set("quantity",initialQuantity-p.getQuantity());
-            mongoTemplate.updateFirst(query,update,Products.class,"Products");
+            Query query = new Query();
+            query.addCriteria((Criteria.where("productId").is(product.getProductId())));
+            Products productInDB = productsRepository.findByproductId(product.getProductId());
+            if (productInDB == null)
+                throw new ProductNotFoundException("there is no product corresponding to productId " + product.getProductId());
+            int initialQuantity = productInDB.getQuantity();
+            Update update = new Update();
+            if(product.isReduce()==true) {
+                update.set("quantity", initialQuantity - product.getQuantity());
+            }
+            else {
+                update.set("quantity", initialQuantity + product.getQuantity());
+            }
+            mongoTemplate.updateFirst(query, update, Products.class, "Products");
         }
         return "quantity updated";
     }
