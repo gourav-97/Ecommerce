@@ -3,9 +3,11 @@ import com.ecommerce.ecommerce.repositories.ProductsRepository;
 import com.ecommerce.ecommerce.models.*;
 import com.ecommerce.ecommerce.service.CategoryService;
 import com.ecommerce.ecommerce.service.ProductsService;
+import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.web.bind.annotation.*;
+import org.json.JSONObject;
 
 
 import javax.validation.constraints.NotNull;
@@ -92,6 +94,25 @@ public class ProductsController {
     @RequestMapping(method=RequestMethod.POST,value="/addProduct")
     public String addProduct(@RequestBody ProductRequest productDetails) throws ProductNotInsertedException {
         return validation.addProduct(productDetails);
+    }
+
+    @RequestMapping(method=RequestMethod.POST,value="/check")
+    public List<String> check(@RequestBody String check) throws Exception {
+        System.out.println(check);
+        JSONObject obj = new JSONObject(check);
+        JSONArray arr = obj.getJSONArray("check");
+
+        System.out.println(arr);
+        for(int i=0;i<arr.length();i++){
+            System.out.println(arr.get(i));
+        }
+
+
+        List<String> ls = new ArrayList<>();
+        ls.add("dadad");
+        ls.add("dadad");
+        ls.add("dadad");
+        return ls;
     }
 
     @RequestMapping(method=RequestMethod.PUT,value="/updateQuantity")
