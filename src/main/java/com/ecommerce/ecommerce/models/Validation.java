@@ -44,4 +44,11 @@ public class Validation
         }
         return productsService.updateQuantity(productDetails);
     }
+
+    public List<Product> filterByPopularScore(String subCategoryId, int score) throws ProductNotFoundException {
+        if(score < 0 || score > 5 )
+            throw new ProductNotFoundException("enter valid popular score");
+        return productsService.filterByPopularScore(subCategoryId,score);
+
+    }
 }

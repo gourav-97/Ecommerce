@@ -78,5 +78,19 @@ public class ProductsController {
     public String updateQuantity(@RequestBody List<ProductDetails> productDetails) throws ProductNotFoundException {
         return validation.updateQuantity(productDetails);
     }
+    @RequestMapping(method=RequestMethod.GET,value="/sortByPriceLTH/{subCategoryId}")
+    public List<Products> sortByPriceLTH(@PathVariable  String subCategoryId){
+        return productsService.sortByPriceLTH(subCategoryId);
+    }
+
+    @RequestMapping(method=RequestMethod.GET,value="/sortByPriceHTL/{subCategoryId}")
+    public List<Products> sortByPriceHTL(@PathVariable  String subCategoryId){
+        return productsService.sortByPriceHTL(subCategoryId);
+    }
+
+    @RequestMapping(method=RequestMethod.GET,value="/filterByPopularScore/{subCategoryId}/{score}")
+    public List<Product> filterByPopularScore(@PathVariable("subCategoryId") String subCategoryId, @PathVariable("score") int score) throws ProductNotFoundException {
+        return validation.filterByPopularScore(subCategoryId,score);
+    }
 
 }
