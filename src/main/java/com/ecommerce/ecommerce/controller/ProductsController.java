@@ -66,12 +66,12 @@ public class ProductsController {
     }
 
     @RequestMapping(method=RequestMethod.GET,value="/sortByPriceLTH/{subCategoryId}")
-    public List<Products> sortByPriceLTH(@PathVariable  String subCategoryId){
+    public List<Product> sortByPriceLTH(@PathVariable  String subCategoryId){
         return productsService.sortByPriceLTH(subCategoryId);
     }
 
     @RequestMapping(method=RequestMethod.GET,value="/sortByPriceHTL/{subCategoryId}")
-    public List<Products> sortByPriceHTL(@PathVariable  String subCategoryId){
+    public List<Product> sortByPriceHTL(@PathVariable  String subCategoryId){
         return productsService.sortByPriceHTL(subCategoryId);
     }
 
@@ -95,7 +95,7 @@ public class ProductsController {
     }
 
     @RequestMapping(method=RequestMethod.PUT,value="/updateQuantity")
-    public String updateQuantity(@RequestBody List<ProductDetails> productDetails) throws ProductNotFoundException {
+    public String updateQuantity(@RequestBody ProductDetails productDetails) throws ProductNotFoundException {
         return validation.updateQuantity(productDetails);
     }
 
