@@ -1,36 +1,29 @@
 package com.ecommerce.ecommerce.models;
 
-public class ProductDetails {
-    String productId;
-    int quantity;
-    boolean reduce;
+import java.util.List;
 
-    public ProductDetails() {
+public class ProductDetails
+{
+    private List<ProductValidated> productsToBeUpdated;
+    private boolean toReduce;
+
+    public ProductDetails(List<ProductValidated> productsToBeUpdated) {
+        this.productsToBeUpdated = productsToBeUpdated;
     }
 
-    public void setProductId(String productId) {
-        this.productId = productId;
+    public List<ProductValidated> getProductsToBeUpdated() {
+        return productsToBeUpdated;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public boolean isToReduce() {
+        return toReduce;
     }
 
-    public void setReduce(boolean reduce) {
-        this.reduce = reduce;
+    public void setProductsToBeUpdated(List<ProductValidated> productsToBeUpdated) {
+        this.productsToBeUpdated = productsToBeUpdated;
     }
 
-    public String getProductId() {
-        return productId;
+    public void setToReduce(boolean toReduce) {
+        this.toReduce = toReduce;
     }
-
-    public boolean isReduce() {
-        return reduce;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-
 }

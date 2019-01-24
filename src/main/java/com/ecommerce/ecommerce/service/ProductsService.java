@@ -135,8 +135,8 @@ public class ProductsService {
         return products;
     }
 
-    public String updateQuantity(List<ProductDetails> productDetails) throws ProductNotFoundException {
-        for(ProductDetails product:productDetails)
+    public String updateQuantity(ProductDetails productDetails) throws ProductNotFoundException {
+        for(ProductValidated product:productDetails.getProductsToBeUpdated())
         {
             Query query = new Query();
             query.addCriteria((Criteria.where("productId").is(product.getProductId())));
@@ -145,7 +145,7 @@ public class ProductsService {
                 throw new ProductNotFoundException("there is no product corresponding to productId " + product.getProductId());
             int initialQuantity = productInDB.getQuantity();
             Update update = new Update();
-            if(product.isReduce()==true) {
+            if(productDetails.isToReduce()==true) {
                 update.set("quantity", initialQuantity - product.getQuantity());
             }
             else {
@@ -156,23 +156,47 @@ public class ProductsService {
         return "quantity updated";
     }
 
-    public List<Products> sortByPriceLTH(String subCategoryId) {
+    public List<Product> sortByPriceLTH(String subCategoryId) {
         Query query=new Query();
         query.addCriteria(Criteria.where("categoryId").is(subCategoryId));
         query.with(new Sort(Sort.DEFAULT_DIRECTION,"price"));
-        return mongoTemplate.find(query,Products.class);
+        List<Products> sortedProducts= mongoTemplate.find(query,Products.class);
+        List<Product> sortedProduct=new ArrayList();
+        for(Products prod:sortedProducts)
+        {
+            Category subCategory = categoryRepository.findBy_id(prod.getParentId());
+            String subCategoryName = subCategory.getCategoryName();
+            //String subCatId = subCategory.get_id();
+            String subCategoryParentId = subCategory.getParentId();
+            String categoryName = categoryRepository.findBy_id(subCategoryParentId).getCategoryName();
+            String categoryId = categoryRepository.findBycategoryName(categoryName).get_id();
+            sortedProduct.add(new Product(categoryName,categoryId,subCategoryName,subCategoryId,prod.getProductName(),prod.getProductId(),prod.getBrand(),prod.getPrice(),prod.getDesc(),prod.getQuantity(),prod.getGenFeatures(),prod.getProdSpecs(),prod.getPopularScore()));
+        }
+        return sortedProduct;
     }
 
-    public List<Products> sortByPriceHTL(String subCategoryId) {
+    public List<Product> sortByPriceHTL(String subCategoryId) {
         Query query=new Query();
         query.addCriteria(Criteria.where("categoryId").is(subCategoryId));
         query.with(new Sort(Sort.Direction.DESC,"price"));
-        return mongoTemplate.find(query,Products.class);
+        List<Products> sortedProducts= mongoTemplate.find(query,Products.class);
+        List<Product> sortedProduct=new ArrayList();
+        for(Products prod:sortedProducts)
+        {
+            Category subCategory = categoryRepository.findBy_id(prod.getParentId());
+            String subCategoryName = subCategory.getCategoryName();
+            //String subCatId = subCategory.get_id();
+            String subCategoryParentId = subCategory.getParentId();
+            String categoryName = categoryRepository.findBy_id(subCategoryParentId).getCategoryName();
+            String categoryId = categoryRepository.findBycategoryName(categoryName).get_id();
+            sortedProduct.add(new Product(categoryName,categoryId,subCategoryName,subCategoryId,prod.getProductName(),prod.getProductId(),prod.getBrand(),prod.getPrice(),prod.getDesc(),prod.getQuantity(),prod.getGenFeatures(),prod.getProdSpecs(),prod.getPopularScore()));
+        }
+        return sortedProduct;
     }
 
     public List<Product> filterByPopularScore(String subCategoryId, int score) throws ProductNotFoundException {
         Query query=new Query();
-        query.addCriteria(Criteria.where("subCategoryId").is(subCategoryId).and("popularScore").gte(score));
+        query.addCriteria(Criteria.where("parentId").is(subCategoryId).and("popularScore").gte(score));
         List<Products> requiredProducts=mongoTemplate.find(query,Products.class);
 
         if(requiredProducts.size()==0)

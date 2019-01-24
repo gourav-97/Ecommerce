@@ -33,14 +33,12 @@ public class Validation
             return categoryService.addCategory(categoryDetails);
     }
 
-    public String updateQuantity(List<ProductDetails> productDetails) throws ProductNotFoundException
+    public String updateQuantity(ProductDetails productDetails) throws ProductNotFoundException
     {
-        for(ProductDetails p:productDetails)
+        for(ProductValidated p:productDetails.getProductsToBeUpdated())
         {
-            if(p.productId==null)
-            {
-                return "Send Valid productID";
-            }
+            if(p.getProductId().equals(null))
+                throw new ProductNotFoundException("enter valid productId");
         }
         return productsService.updateQuantity(productDetails);
     }
