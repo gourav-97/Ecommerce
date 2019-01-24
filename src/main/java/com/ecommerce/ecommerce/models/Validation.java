@@ -39,7 +39,7 @@ public class Validation
         {
             if(p.productId==null)
             {
-                return "Send valid productID";
+                return "Send Valid productID";
             }
         }
         return productsService.updateQuantity(productDetails);
@@ -47,7 +47,7 @@ public class Validation
 
     public List<Product> filterByPopularScore(String subCategoryId, int score) throws ProductNotFoundException {
         if(score < 0 || score > 5 )
-            throw new ProductNotFoundException("enter valid popular score");
+            throw new ProductNotFoundException("Enter Valid Popular Score");
         return productsService.filterByPopularScore(subCategoryId,score);
 
     }

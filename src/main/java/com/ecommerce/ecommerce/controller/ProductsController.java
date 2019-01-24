@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -91,6 +92,11 @@ public class ProductsController {
     @RequestMapping(method=RequestMethod.GET,value="/filterByPopularScore/{subCategoryId}/{score}")
     public List<Product> filterByPopularScore(@PathVariable("subCategoryId") String subCategoryId, @PathVariable("score") int score) throws ProductNotFoundException {
         return validation.filterByPopularScore(subCategoryId,score);
+    }
+
+    @RequestMapping(method=RequestMethod.POST,value = "/getProductById")
+    public List<ProductValidated> getProductsById(@RequestBody List<String> productIds) throws ProductNotFoundException{
+        return productsService.getByProductIds(productIds);
     }
 
 }

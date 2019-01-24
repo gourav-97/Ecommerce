@@ -89,7 +89,7 @@ public class ProductsService {
     public Product getByProductId(String productId) throws ProductNotFoundException {
             Products product = productsRepository.findByproductId(productId);
             if (product == null) {
-                throw new ProductNotFoundException("There is no product belonging to productID ");
+                throw new ProductNotFoundException("There is no product belonging to productID "+productId);
             }
             String subCategoryName = categoryRepository.findBy_id(product.getParentId()).getCategoryName();
             String subCategoryId = categoryRepository.findBycategoryName(subCategoryName).get_id();
@@ -142,6 +142,19 @@ public class ProductsService {
         return "quantity updated";
     }
 
+    public List<ProductValidated> getByProductIds(List<String> productIds) throws ProductNotFoundException{
+
+        List<ProductValidated> productsValidated = new ArrayList<>();
+
+        for(String productId:productIds) {
+            Product product = getByProductId(productId);
+            if(product==null)
+                throw new ProductNotFoundException("Some Products were not found");
+            ProductValidated productValidated = new ProductValidated(product.getCategory(),product.getCategoryId(),product.getProductName(),product.getProductId(),product.getPrice(),product.getQuantity());
+            productsValidated.add(productValidated);
+        }
+        return productsValidated;
+    }
     public List<Products> sortByPriceLTH(String subCategoryId)
     {
         Query query=new Query();
