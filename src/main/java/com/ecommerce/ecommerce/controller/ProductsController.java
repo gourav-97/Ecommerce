@@ -65,20 +65,6 @@ public class ProductsController {
             return categoryService.getProductsInSubCat(subCategoryId);
     }
 
-    @RequestMapping(method=RequestMethod.POST,value="/addCategory")
-    public String addCategory(@RequestBody CategoryRequest categoryDetails) throws CategoryNotInsertedException {
-        return validation.addCategory(categoryDetails);
-    }
-
-    @RequestMapping(method=RequestMethod.POST,value="/addProduct")
-    public String addProduct(@RequestBody ProductRequest productDetails) throws ProductNotInsertedException {
-        return validation.addProduct(productDetails);
-    }
-
-    @RequestMapping(method=RequestMethod.PUT,value="/updateQuantity")
-    public String updateQuantity(@RequestBody List<ProductDetails> productDetails) throws ProductNotFoundException {
-        return validation.updateQuantity(productDetails);
-    }
     @RequestMapping(method=RequestMethod.GET,value="/sortByPriceLTH/{subCategoryId}")
     public List<Products> sortByPriceLTH(@PathVariable  String subCategoryId){
         return productsService.sortByPriceLTH(subCategoryId);
@@ -94,9 +80,23 @@ public class ProductsController {
         return validation.filterByPopularScore(subCategoryId,score);
     }
 
-    @RequestMapping(method=RequestMethod.POST,value = "/getProductById")
+    @RequestMapping(method=RequestMethod.POST,value = "/getProductsById")
     public List<ProductValidated> getProductsById(@RequestBody List<String> productIds) throws ProductNotFoundException{
         return productsService.getByProductIds(productIds);
+    }
+    @RequestMapping(method=RequestMethod.POST,value="/addCategory")
+    public String addCategory(@RequestBody CategoryRequest categoryDetails) throws CategoryNotInsertedException {
+        return validation.addCategory(categoryDetails);
+    }
+
+    @RequestMapping(method=RequestMethod.POST,value="/addProduct")
+    public String addProduct(@RequestBody ProductRequest productDetails) throws ProductNotInsertedException {
+        return validation.addProduct(productDetails);
+    }
+
+    @RequestMapping(method=RequestMethod.PUT,value="/updateQuantity")
+    public String updateQuantity(@RequestBody List<ProductDetails> productDetails) throws ProductNotFoundException {
+        return validation.updateQuantity(productDetails);
     }
 
 }

@@ -66,6 +66,19 @@ public class ProductsService {
         return product;
     }
 
+    public Product getByProductId(String productId) throws ProductNotFoundException {
+        Products product = productsRepository.findByproductId(productId);
+        if (product == null) {
+            throw new ProductNotFoundException("There is no product belonging to productID "+productId);
+        }
+        String subCategoryName = categoryRepository.findBy_id(product.getParentId()).getCategoryName();
+        String subCategoryId = categoryRepository.findBycategoryName(subCategoryName).get_id();
+        String subCategoryParentId = categoryRepository.findBy_id(subCategoryId).getParentId();
+        String categoryName = categoryRepository.findBy_id(subCategoryParentId).getCategoryName();
+        String categoryId = categoryRepository.findBycategoryName(categoryName).get_id();
+        return new Product(categoryName,categoryId,subCategoryName,subCategoryId,product.getProductName(),product.getProductId(),product.getBrand(),product.getPrice(),product.getDesc(),product.getQuantity(),product.getGenFeatures(),product.getProdSpecs(),product.getPopularScore());
+    }
+
     public List<Product> getByProductId(List<String> productIds) throws ProductNotFoundException {
         List<Product> products = new ArrayList<>();
         for(String productId :productIds) {
@@ -86,17 +99,18 @@ public class ProductsService {
         return products;
     }
 
-    public Product getByProductId(String productId) throws ProductNotFoundException {
-            Products product = productsRepository.findByproductId(productId);
-            if (product == null) {
-                throw new ProductNotFoundException("There is no product belonging to productID "+productId);
-            }
-            String subCategoryName = categoryRepository.findBy_id(product.getParentId()).getCategoryName();
-            String subCategoryId = categoryRepository.findBycategoryName(subCategoryName).get_id();
-            String subCategoryParentId = categoryRepository.findBy_id(subCategoryId).getParentId();
-            String categoryName = categoryRepository.findBy_id(subCategoryParentId).getCategoryName();
-            String categoryId = categoryRepository.findBycategoryName(categoryName).get_id();
-            return new Product(categoryName,categoryId,subCategoryName,subCategoryId,product.getProductName(),product.getProductId(),product.getBrand(),product.getPrice(),product.getDesc(),product.getQuantity(),product.getGenFeatures(),product.getProdSpecs(),product.getPopularScore());
+    public List<ProductValidated> getByProductIds(List<String> productIds) throws ProductNotFoundException{
+
+        List<ProductValidated> productsValidated = new ArrayList<>();
+
+        for(String productId:productIds) {
+            Product product = getByProductId(productId);
+            if(product==null)
+                throw new ProductNotFoundException("Some Products were not found");
+            ProductValidated productValidated = new ProductValidated(product.getCategory(),product.getCategoryId(),product.getProductName(),product.getProductId(),product.getPrice(),product.getQuantity());
+            productsValidated.add(productValidated);
+        }
+        return productsValidated;
     }
 
     public List<Product> getProductByCategory(String categoryId) throws CategoryNotFoundException {
@@ -142,29 +156,14 @@ public class ProductsService {
         return "quantity updated";
     }
 
-    public List<ProductValidated> getByProductIds(List<String> productIds) throws ProductNotFoundException{
-
-        List<ProductValidated> productsValidated = new ArrayList<>();
-
-        for(String productId:productIds) {
-            Product product = getByProductId(productId);
-            if(product==null)
-                throw new ProductNotFoundException("Some Products were not found");
-            ProductValidated productValidated = new ProductValidated(product.getCategory(),product.getCategoryId(),product.getProductName(),product.getProductId(),product.getPrice(),product.getQuantity());
-            productsValidated.add(productValidated);
-        }
-        return productsValidated;
-    }
-    public List<Products> sortByPriceLTH(String subCategoryId)
-    {
+    public List<Products> sortByPriceLTH(String subCategoryId) {
         Query query=new Query();
         query.addCriteria(Criteria.where("categoryId").is(subCategoryId));
         query.with(new Sort(Sort.DEFAULT_DIRECTION,"price"));
         return mongoTemplate.find(query,Products.class);
     }
 
-    public List<Products> sortByPriceHTL(String subCategoryId)
-    {
+    public List<Products> sortByPriceHTL(String subCategoryId) {
         Query query=new Query();
         query.addCriteria(Criteria.where("categoryId").is(subCategoryId));
         query.with(new Sort(Sort.Direction.DESC,"price"));
