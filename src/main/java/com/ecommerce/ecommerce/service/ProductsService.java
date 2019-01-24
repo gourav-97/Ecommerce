@@ -5,6 +5,7 @@ import com.ecommerce.ecommerce.repositories.CategoryRepository;
 import com.ecommerce.ecommerce.repositories.ProductsRepository;
 import com.ecommerce.ecommerce.repositories.ProductsRepositoryCustom;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -139,5 +140,42 @@ public class ProductsService {
             mongoTemplate.updateFirst(query, update, Products.class, "Products");
         }
         return "quantity updated";
+    }
+
+    public List<Products> sortByPriceLTH(String subCategoryId)
+    {
+        Query query=new Query();
+        query.addCriteria(Criteria.where("categoryId").is(subCategoryId));
+        query.with(new Sort(Sort.DEFAULT_DIRECTION,"price"));
+        return mongoTemplate.find(query,Products.class);
+    }
+
+    public List<Products> sortByPriceHTL(String subCategoryId)
+    {
+        Query query=new Query();
+        query.addCriteria(Criteria.where("categoryId").is(subCategoryId));
+        query.with(new Sort(Sort.Direction.DESC,"price"));
+        return mongoTemplate.find(query,Products.class);
+    }
+
+    public List<Product> filterByPopularScore(String subCategoryId, int score) throws ProductNotFoundException {
+        Query query=new Query();
+        query.addCriteria(Criteria.where("subCategoryId").is(subCategoryId).and("popularScore").gte(score));
+        List<Products> requiredProducts=mongoTemplate.find(query,Products.class);
+
+        if(requiredProducts.size()==0)
+            throw new ProductNotFoundException("there are no products matching your filter");
+
+        List<Product> validProduct=new ArrayList<>();
+        for(Products p:requiredProducts)
+        {
+            String subCategoryParentId = categoryRepository.findBy_id(subCategoryId).getParentId();
+            String categoryName = categoryRepository.findBy_id(subCategoryParentId).getCategoryName();
+            String subCategoryName = categoryRepository.findBy_id(p.getParentId()).getCategoryName();
+            validProduct.add(new Product(categoryName,subCategoryParentId,subCategoryName,subCategoryId,p.getProductName(),p.getProductId(),p.getBrand(),p.getPrice(),p.getDesc(),p.getQuantity(),p.getGenFeatures(),p.getProdSpecs(),p.getPopularScore()));
+            //validProduct.add(new Product(subCategoryId,categoryRepository.));
+        }
+        return validProduct;
+
     }
 }
