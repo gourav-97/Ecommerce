@@ -35,7 +35,7 @@ public class Validation
 
     public String updateQuantity(ProductDetails productDetails) throws ProductNotFoundException
     {
-        for(ProductValidated p:productDetails.getProductsToBeUpdated())
+        for(ProductValidated p:productDetails.getProductIds())
         {
             if(p.getProductId().equals(null))
                 throw new ProductNotFoundException("enter valid productId");

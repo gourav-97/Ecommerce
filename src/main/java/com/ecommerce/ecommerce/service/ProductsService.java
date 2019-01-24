@@ -136,7 +136,7 @@ public class ProductsService {
     }
 
     public String updateQuantity(ProductDetails productDetails) throws ProductNotFoundException {
-        for(ProductValidated product:productDetails.getProductsToBeUpdated())
+        for(ProductValidated product:productDetails.getProductIds())
         {
             Query query = new Query();
             query.addCriteria((Criteria.where("productId").is(product.getProductId())));
@@ -158,7 +158,7 @@ public class ProductsService {
 
     public List<Product> sortByPriceLTH(String subCategoryId) {
         Query query=new Query();
-        query.addCriteria(Criteria.where("categoryId").is(subCategoryId));
+        query.addCriteria(Criteria.where("parentId").is(subCategoryId));
         query.with(new Sort(Sort.DEFAULT_DIRECTION,"price"));
         List<Products> sortedProducts= mongoTemplate.find(query,Products.class);
         List<Product> sortedProduct=new ArrayList();
@@ -177,7 +177,7 @@ public class ProductsService {
 
     public List<Product> sortByPriceHTL(String subCategoryId) {
         Query query=new Query();
-        query.addCriteria(Criteria.where("categoryId").is(subCategoryId));
+        query.addCriteria(Criteria.where("parentId").is(subCategoryId));
         query.with(new Sort(Sort.Direction.DESC,"price"));
         List<Products> sortedProducts= mongoTemplate.find(query,Products.class);
         List<Product> sortedProduct=new ArrayList();

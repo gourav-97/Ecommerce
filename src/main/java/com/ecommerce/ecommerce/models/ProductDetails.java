@@ -4,23 +4,31 @@ import java.util.List;
 
 public class ProductDetails
 {
-    private List<ProductValidated> productsToBeUpdated;
+    private List<ProductValidated> productIds;
     private boolean toReduce;
 
-    public ProductDetails(List<ProductValidated> productsToBeUpdated) {
-        this.productsToBeUpdated = productsToBeUpdated;
+    public ProductDetails() {
     }
 
-    public List<ProductValidated> getProductsToBeUpdated() {
-        return productsToBeUpdated;
+    public ProductDetails(List<ProductValidated> productsToBeUpdated, boolean toReduce) {
+        this.productIds = productsToBeUpdated;
+        this.toReduce = toReduce;
+    }
+
+    public ProductDetails(List<ProductValidated> productsToBeUpdated) {
+        this.productIds = productsToBeUpdated;
+    }
+
+    public List<ProductValidated> getProductIds() {
+        return productIds;
     }
 
     public boolean isToReduce() {
         return toReduce;
     }
 
-    public void setProductsToBeUpdated(List<ProductValidated> productsToBeUpdated) {
-        this.productsToBeUpdated = productsToBeUpdated;
+    public void setProductIds(List<ProductValidated> productIds) {
+        this.productIds = productIds;
     }
 
     public void setToReduce(boolean toReduce) {
