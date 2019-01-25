@@ -3,6 +3,7 @@ import com.ecommerce.ecommerce.repositories.ProductsRepository;
 import com.ecommerce.ecommerce.models.*;
 import com.ecommerce.ecommerce.service.CategoryService;
 import com.ecommerce.ecommerce.service.ProductsService;
+import org.apache.tomcat.util.json.JSONParser;
 import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -97,17 +98,14 @@ public class ProductsController {
     }
 
     @RequestMapping(method=RequestMethod.POST,value="/check")
-    public List<String> check(@RequestBody String check) throws Exception {
+    public List<String> check(@RequestBody String check) throws ProductNotFoundException,Exception {
         System.out.println(check);
         JSONObject obj = new JSONObject(check);
         JSONArray arr = obj.getJSONArray("check");
-
         System.out.println(arr);
         for(int i=0;i<arr.length();i++){
             System.out.println(arr.get(i));
         }
-
-
         List<String> ls = new ArrayList<>();
         ls.add("dadad");
         ls.add("dadad");
@@ -120,4 +118,8 @@ public class ProductsController {
         return validation.updateQuantity(productDetails);
     }
 
+//    @RequestMapping(method = RequestMethod.GET,value="/topCategories")
+//    public List<Cat> getTopCategories() throws CategoryNotFoundException{
+//        return categoryService.getTopCategories();
+//    }
 }

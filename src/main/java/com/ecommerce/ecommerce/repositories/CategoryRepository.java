@@ -20,4 +20,6 @@ public interface CategoryRepository extends MongoRepository<Category,String> {
     List<Category> findByparentId(String parentId);
 
     Category findBy_id(String _id);
+
+    List<Category> findBytopScoreGreaterThan(int topScore);
 }
