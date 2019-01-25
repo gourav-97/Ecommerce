@@ -48,7 +48,8 @@ public class ProductsService {
 
         if(products.isEmpty())
         {
-            throw new ProductNotFoundException("There are 0 products in database");
+            throw new ProductNotFoundException("there are no products in database");
+            //return ResponseEntity.status(200).body(new CustomResponse(404,"there are no products in database",null));
         }
 
         for(Products prod:products) {
@@ -63,12 +64,14 @@ public class ProductsService {
                 product.add(newProduct);
             }
         }
+        //return ResponseEntity.status(200).body(new CustomResponse(200,"ok",product));
         return product;
     }
 
     public Product getByProductId(String productId) throws ProductNotFoundException {
         Products product = productsRepository.findByproductId(productId);
         if (product == null) {
+            //return ResponseEntity.status(200).body(new CustomResponse(404,"There is no product belonging to productID "+productId,null));
             throw new ProductNotFoundException("There is no product belonging to productID "+productId);
         }
         String subCategoryName = categoryRepository.findBy_id(product.getParentId()).getCategoryName();
@@ -76,6 +79,7 @@ public class ProductsService {
         String subCategoryParentId = categoryRepository.findBy_id(subCategoryId).getParentId();
         String categoryName = categoryRepository.findBy_id(subCategoryParentId).getCategoryName();
         String categoryId = categoryRepository.findBycategoryName(categoryName).get_id();
+        //return ResponseEntity.status(200).body(new CustomResponse(200,"ok",new Product(categoryName,categoryId,subCategoryName,subCategoryId,product.getProductName(),product.getProductId(),product.getBrand(),product.getPrice(),product.getDesc(),product.getQuantity(),product.getGenFeatures(),product.getProdSpecs(),product.getPopularScore())));
         return new Product(categoryName,categoryId,subCategoryName,subCategoryId,product.getProductName(),product.getProductId(),product.getBrand(),product.getPrice(),product.getDesc(),product.getQuantity(),product.getGenFeatures(),product.getProdSpecs(),product.getPopularScore());
     }
 
@@ -84,6 +88,7 @@ public class ProductsService {
         for(String productId :productIds) {
             Products product = productsRepository.findByproductId(productId);
             if (product == null) {
+                //return ResponseEntity.status(200).body(new CustomResponse(404,"There is no product belonging to productID "+productId,null));
                 throw new ProductNotFoundException("There is no product belonging to productID "+productId);
             }
             String subCategoryName = categoryRepository.findBy_id(product.getParentId()).getCategoryName();
@@ -96,6 +101,7 @@ public class ProductsService {
                 products.add(newProduct);
             }
         }
+        //return ResponseEntity.status(200).body(new CustomResponse(200,"ok",products));
         return products;
     }
 
@@ -104,12 +110,14 @@ public class ProductsService {
         List<ProductValidated> productsValidated = new ArrayList<>();
 
         for(String productId:productIds) {
-            Product product = getByProductId(productId);
+            Product product = (Product) getByProductId(productId);
             if(product==null)
+                //return ResponseEntity.status(200).body(new CustomResponse(404,"Some products were not found "+productId,null));
                 throw new ProductNotFoundException("Some Products were not found");
             ProductValidated productValidated = new ProductValidated(product.getCategory(),product.getCategoryId(),product.getProductName(),product.getProductId(),product.getPrice(),product.getQuantity());
             productsValidated.add(productValidated);
         }
+        //return ResponseEntity.status(200).body(new CustomResponse(200,"ok",productsValidated));
         return productsValidated;
     }
 
@@ -156,11 +164,13 @@ public class ProductsService {
         return "quantity updated";
     }
 
-    public List<Product> sortByPriceLTH(String subCategoryId) {
+    public List<Product> sortByPriceLTH(String subCategoryId) throws ProductNotFoundException {
         Query query=new Query();
         query.addCriteria(Criteria.where("parentId").is(subCategoryId));
         query.with(new Sort(Sort.DEFAULT_DIRECTION,"price"));
         List<Products> sortedProducts= mongoTemplate.find(query,Products.class);
+        if(sortedProducts.size()==0)
+            throw new ProductNotFoundException("there are no products to sort");
         List<Product> sortedProduct=new ArrayList();
         for(Products prod:sortedProducts)
         {
@@ -175,11 +185,13 @@ public class ProductsService {
         return sortedProduct;
     }
 
-    public List<Product> sortByPriceHTL(String subCategoryId) {
+    public List<Product> sortByPriceHTL(String subCategoryId) throws ProductNotFoundException {
         Query query=new Query();
         query.addCriteria(Criteria.where("parentId").is(subCategoryId));
         query.with(new Sort(Sort.Direction.DESC,"price"));
         List<Products> sortedProducts= mongoTemplate.find(query,Products.class);
+        if(sortedProducts.size()==0)
+            throw new ProductNotFoundException("There are no products to sort");
         List<Product> sortedProduct=new ArrayList();
         for(Products prod:sortedProducts)
         {
