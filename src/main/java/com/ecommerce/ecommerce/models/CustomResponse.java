@@ -1,16 +1,14 @@
 package com.ecommerce.ecommerce.models;
 
-import org.springframework.http.ResponseEntity;
-
-public class CustomResponse<T> {
+public class CustomResponse<ResponseData> {
     private int statusCode;
     private String message;
-    private T t;
+    private ResponseData responseData;
 
-    public CustomResponse(int statusCode, String message, T t) {
+    public CustomResponse(int statusCode, String message, ResponseData responseData) {
         this.statusCode = statusCode;
         this.message = message;
-        this.t = t;
+        this.responseData = responseData;
     }
 
     public int getStatusCode() {
@@ -21,8 +19,8 @@ public class CustomResponse<T> {
         return message;
     }
 
-    public T getT() {
-        return t;
+    public ResponseData getResponseData() {
+        return responseData;
     }
 
     public void setStatusCode(int statusCode) {
@@ -33,7 +31,7 @@ public class CustomResponse<T> {
         this.message = message;
     }
 
-    public void setT(T t) {
-        this.t = t;
+    public void setResponseData(ResponseData responseData) {
+        this.responseData = responseData;
     }
 }
