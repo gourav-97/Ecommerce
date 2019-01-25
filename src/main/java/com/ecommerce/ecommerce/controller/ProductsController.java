@@ -4,11 +4,10 @@ import com.ecommerce.ecommerce.models.*;
 import com.ecommerce.ecommerce.service.CategoryService;
 import com.ecommerce.ecommerce.service.ProductsService;
 import org.json.JSONArray;
-import org.apache.tomcat.util.json.JSONParser;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 //import org.json.JSONObject;
 
@@ -50,7 +49,7 @@ public class ProductsController {
     }
 
     @RequestMapping(method=RequestMethod.GET,value="/categories")
-    public List<Cat> getCategories() throws CategoryNotFoundException {
+    public ResponseEntity<List<Cat>> getCategories() throws CategoryNotFoundException {
             return categoryService.getAllCategories();
     }
 

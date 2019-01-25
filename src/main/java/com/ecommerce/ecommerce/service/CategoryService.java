@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -41,19 +43,22 @@ public class CategoryService {
         return categoryObject.get_id();
     }
 
-    public List<Cat> getAllCategories() throws CategoryNotFoundException{
+    public ResponseEntity<List<Cat>> getAllCategories() throws CategoryNotFoundException{
 
         List<Cat> categories = new ArrayList<>();
 
         List<Category> category = categoryRepository.findCategoryName();
         if(category==null)
+            //throw new HttpResponseException
+            //return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new CategoryNotFoundException("There are 0 categories in database"));
                 throw new CategoryNotFoundException("There are 0 categories in database");
         for(Category c:category)
         {
             Cat newCategory = new Cat(c.getCategoryName(),c.get_id(),c.getDesc(),c.getPicURL(),c.getTopScore());
             categories.add(newCategory);
         }
-        return categories;
+        return ResponseEntity.status(HttpStatus.OK).body(categories);
+        //return categories;
     }
 
     public List<Cat> getSubCategories(String categoryId) throws CategoryNotFoundException{
