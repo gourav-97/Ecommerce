@@ -61,7 +61,7 @@ public class CategoryService {
         //return categories;
     }
 
-    public List<Cat> getSubCategories(String categoryId) throws CategoryNotFoundException{
+    public ResponseEntity<List<Cat>> getSubCategories(String categoryId) throws CategoryNotFoundException{
         List<Category> categories = categoryRepository.findByparentId(categoryId);
         if(categories.isEmpty())
             throw new CategoryNotFoundException("There are 0 categories in database");
@@ -71,7 +71,8 @@ public class CategoryService {
             Cat category = new Cat(c.getCategoryName(),c.get_id(),c.getDesc(),c.getPicURL(),c.getTopScore());
             subCategories.add(category);
         }
-        return subCategories;
+        return ResponseEntity.status(HttpStatus.OK).body(subCategories);
+        //return subCategories;
     }
 
     public List<Product> getProductsInSubCat(String subCategoryId) throws CategoryNotFoundException, ProductNotFoundException {

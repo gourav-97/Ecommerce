@@ -54,7 +54,7 @@ public class ProductsController {
     }
 
     @RequestMapping(method=RequestMethod.GET,value="/categories/{categoryId}")
-    public List<Cat> getSubCategories(@PathVariable String categoryId) throws CategoryNotFoundException {
+    public ResponseEntity<List<Cat>> getSubCategories(@PathVariable String categoryId) throws CategoryNotFoundException {
             return categoryService.getSubCategories(categoryId);
     }
 
