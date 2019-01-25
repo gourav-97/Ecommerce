@@ -3,11 +3,13 @@ import com.ecommerce.ecommerce.repositories.ProductsRepository;
 import com.ecommerce.ecommerce.models.*;
 import com.ecommerce.ecommerce.service.CategoryService;
 import com.ecommerce.ecommerce.service.ProductsService;
+//import org.json.JSONArray;
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.web.bind.annotation.*;
-import org.json.JSONObject;
+//import org.json.JSONObject;
 
 
 import javax.validation.constraints.NotNull;
@@ -80,6 +82,16 @@ public class ProductsController {
     @RequestMapping(method=RequestMethod.GET,value="/filterByPopularScore/{subCategoryId}/{score}")
     public List<Product> filterByPopularScore(@PathVariable("subCategoryId") String subCategoryId, @PathVariable("score") int score) throws ProductNotFoundException {
         return validation.filterByPopularScore(subCategoryId,score);
+    }
+
+    @RequestMapping(method=RequestMethod.GET,value="/displayByPopularScore")
+    public List<Product> displayByPopularScore() throws ProductNotFoundException {
+        return productsService.displayByPopularScore();
+    }
+
+    @RequestMapping(method=RequestMethod.GET,value="/displayByTopScore/")
+    public List<Cat> displayByTopScore() throws CategoryNotFoundException {
+        return categoryService.displayByTopScore();
     }
 
     @RequestMapping(method=RequestMethod.POST,value = "/getProductsById")
