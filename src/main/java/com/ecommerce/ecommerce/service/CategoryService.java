@@ -9,8 +9,6 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -43,37 +41,37 @@ public class CategoryService {
         return categoryObject.get_id();
     }
 
-    public ResponseEntity<CustomResponse> getAllCategories() throws CategoryNotFoundException{
+    public List<Cat> getAllCategories() throws CategoryNotFoundException{
 
         List<Cat> categories = new ArrayList<>();
 
         List<Category> category = categoryRepository.findCategoryName();
         if(category==null)
             //throw new HttpResponseException
-            return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse<>(404,"Ther are 0 categories in database",null));
-               // throw new CategoryNotFoundException("There are 0 categories in database");
+            //return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse<>(404,"Ther are 0 categories in database",null));
+               throw new CategoryNotFoundException("There are 0 categories in database");
         for(Category c:category)
         {
             Cat newCategory = new Cat(c.getCategoryName(),c.get_id(),c.getDesc(),c.getPicURL(),c.getTopScore());
             categories.add(newCategory);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse<>(200,"ok",categories));
-        //return categories;
+        //return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse<>(200,"ok",categories));
+        return categories;
     }
 
-    public ResponseEntity<CustomResponse> getSubCategories(String categoryId) throws CategoryNotFoundException{
+    public List<Cat> getSubCategories(String categoryId) throws CategoryNotFoundException{
         List<Category> categories = categoryRepository.findByparentId(categoryId);
         if(categories.isEmpty())
-            return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse<>(404,"Ther are 0 categories in database",null));
-            //throw new CategoryNotFoundException("There are 0 categories in database");
+            //return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse<>(404,"Ther are 0 categories in database",null));
+            throw new CategoryNotFoundException("There are 0 categories in database");
         List<Cat> subCategories = new ArrayList<>();
         for(Category c:categories)
         {
             Cat category = new Cat(c.getCategoryName(),c.get_id(),c.getDesc(),c.getPicURL(),c.getTopScore());
             subCategories.add(category);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse<>(200,"ok",subCategories));
-        //return subCategories;
+        //return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse<>(200,"ok",subCategories));
+        return subCategories;
     }
 
     public List<Product> getProductsInSubCat(String subCategoryId) throws CategoryNotFoundException, ProductNotFoundException {

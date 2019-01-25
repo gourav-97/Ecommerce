@@ -39,54 +39,122 @@ public class ProductsController {
     }
 
     @RequestMapping(method=RequestMethod.GET,value="/products")
-    public List<Product> showAll() throws ProductNotFoundException {
-            return productsService.getAllProduct();
+    public ResponseEntity<CustomResponse> showAll(){// throws ProductNotFoundException {
+        try{
+            List<Product> allProduct= productsService.getAllProduct();
+            return ResponseEntity.status(200).body(new CustomResponse(200,"ok",allProduct));
+        }
+        catch(ProductNotFoundException pne)
+        {
+            return ResponseEntity.status(200).body(new CustomResponse(404,"no product found",null));
+        }
     }
 
     @RequestMapping(method=RequestMethod.GET,value="/products/{productId}")
-    public List<Product> showById (@PathVariable List<String> productId) throws ProductNotFoundException {
-            return productsService.getByProductId(productId);
+    public ResponseEntity<CustomResponse> showById (@PathVariable List<String> productId){// throws ProductNotFoundException {
+        try{
+            List<Product> product= productsService.getByProductId(productId);
+            return ResponseEntity.status(200).body(new CustomResponse(200,"ok",product));
+        }
+        catch(ProductNotFoundException pne)
+        {
+            return ResponseEntity.status(200).body(new CustomResponse(404,"no product found for productId"+productId,null));
+        }
     }
 
     @RequestMapping(method=RequestMethod.GET,value="/categories")
-    public ResponseEntity<CustomResponse> getCategories() throws CategoryNotFoundException {
-            return categoryService.getAllCategories();
+    public ResponseEntity<CustomResponse> getCategories(){// throws CategoryNotFoundException {
+        try{
+            List<Cat> allCategories= categoryService.getAllCategories();
+            return ResponseEntity.status(200).body(new CustomResponse(200,"ok",allCategories));
+        }
+        catch(CategoryNotFoundException cne){
+            return ResponseEntity.status(200).body(new CustomResponse(404,"There are 0 categories in database",null));
+        }
     }
 
     @RequestMapping(method=RequestMethod.GET,value="/categories/{categoryId}")
-    public ResponseEntity<CustomResponse> getSubCategories(@PathVariable String categoryId) throws CategoryNotFoundException {
-            return categoryService.getSubCategories(categoryId);
+    public ResponseEntity<CustomResponse> getSubCategories(@PathVariable String categoryId){// throws CategoryNotFoundException {
+        try{
+            List<Cat> subCategories= categoryService.getSubCategories(categoryId);
+            return ResponseEntity.status(200).body(new CustomResponse(200,"ok",subCategories));
+        }
+        catch(CategoryNotFoundException cne)
+        {
+            return ResponseEntity.status(200).body(new CustomResponse(404,"There are 0 categories in database",null));
+        }
     }
 
     @RequestMapping(method=RequestMethod.GET,value="/categories/{categoryId}/products")
-    public List<Product> getProductsByCategory(@PathVariable String categoryId) throws CategoryNotFoundException {
-           List<Product> products = productsService.getProductByCategory(categoryId);
-           return products;
+    public ResponseEntity<CustomResponse> getProductsByCategory(@PathVariable String categoryId){// throws CategoryNotFoundException {
+           try{
+               List<Product> products = productsService.getProductByCategory(categoryId);
+               return ResponseEntity.status(200).body(new CustomResponse(200,"ok",products));
+           }
+           catch(CategoryNotFoundException cne){
+               return ResponseEntity.status(200).body(new CustomResponse(404,"There are no categories/subcategories in database",null));
+           }
+           //return products;
     }
 
     @RequestMapping(method=RequestMethod.GET,value="/categories/{categoryId}/{subCategoryId}")
-    public List<Product> getProduct(@PathVariable @NotNull String categoryId, @PathVariable String subCategoryId) throws CategoryNotFoundException, ProductNotFoundException {
-            return categoryService.getProductsInSubCat(subCategoryId);
+    public ResponseEntity<CustomResponse> getProduct(@PathVariable @NotNull String categoryId, @PathVariable String subCategoryId){// throws CategoryNotFoundException, ProductNotFoundException {
+        try{
+            List<Product> products= categoryService.getProductsInSubCat(subCategoryId);
+            return ResponseEntity.status(200).body(new CustomResponse(200,"ok",products));
+        }
+        catch(CategoryNotFoundException | ProductNotFoundException pne)
+        {
+            return ResponseEntity.status(200).body(new CustomResponse(404,"There are no categories/subcategories in database",null));
+        }
     }
 
     @RequestMapping(method=RequestMethod.GET,value="/sortByPriceLTH/{subCategoryId}")
-    public List<Product> sortByPriceLTH(@PathVariable  String subCategoryId){
-        return productsService.sortByPriceLTH(subCategoryId);
+    public ResponseEntity<CustomResponse> sortByPriceLTH(@PathVariable  String subCategoryId){
+        try{
+            List<Product> sortedList= productsService.sortByPriceLTH(subCategoryId);
+            return ResponseEntity.status(200).body(new CustomResponse(200,"ok",sortedList));
+        }
+        catch(ProductNotFoundException pne){
+            return ResponseEntity.status(200).body(new CustomResponse(404,"there are no products to sort",null));
+        }
+       // return null;
     }
 
     @RequestMapping(method=RequestMethod.GET,value="/sortByPriceHTL/{subCategoryId}")
-    public List<Product> sortByPriceHTL(@PathVariable  String subCategoryId){
-        return productsService.sortByPriceHTL(subCategoryId);
+    public ResponseEntity<CustomResponse> sortByPriceHTL(@PathVariable  String subCategoryId){
+        try{
+            List<Product> sortedList= productsService.sortByPriceHTL(subCategoryId);
+            return ResponseEntity.status(200).body(new CustomResponse(200,"ok",sortedList));
+        }
+        catch(ProductNotFoundException pne)
+        {
+            return ResponseEntity.status(200).body(new CustomResponse(404,"there are no products to sort",null));
+        }
     }
 
     @RequestMapping(method=RequestMethod.GET,value="/filterByPopularScore/{subCategoryId}/{score}")
-    public List<Product> filterByPopularScore(@PathVariable("subCategoryId") String subCategoryId, @PathVariable("score") int score) throws ProductNotFoundException {
-        return validation.filterByPopularScore(subCategoryId,score);
+    public ResponseEntity<CustomResponse> filterByPopularScore(@PathVariable("subCategoryId") String subCategoryId, @PathVariable("score") int score){// throws ProductNotFoundException {
+        try {
+            List<Product> filteredProduct = validation.filterByPopularScore(subCategoryId, score);
+            return ResponseEntity.status(200).body(new CustomResponse(200, "ok", filteredProduct));
+        }
+        catch(ProductNotFoundException pne)
+        {
+            return ResponseEntity.status(200).body(new CustomResponse(404,"No products found",null));
+        }
     }
 
     @RequestMapping(method=RequestMethod.GET,value="/displayByPopularScore")
-    public List<Product> displayByPopularScore() throws ProductNotFoundException {
-        return productsService.displayByPopularScore();
+    public ResponseEntity<CustomResponse> displayByPopularScore() { //throws ProductNotFoundException {
+        try{
+            List<Product> popularProducts = productsService.displayByPopularScore();
+            return ResponseEntity.status(200).body(new CustomResponse(200, "ok", popularProducts));
+        }
+        catch(ProductNotFoundException pne)
+        {
+            return ResponseEntity.status(200).body(new CustomResponse(404,"No products found",null));
+        }
     }
 
     @RequestMapping(method=RequestMethod.GET,value="/displayByTopScore/")
@@ -95,8 +163,15 @@ public class ProductsController {
     }
 
     @RequestMapping(method=RequestMethod.POST,value = "/getProductsById")
-    public List<ProductValidated> getProductsById(@RequestBody List<String> productIds) throws ProductNotFoundException{
-        return productsService.getByProductIds(productIds);
+    public ResponseEntity<CustomResponse> getProductsById(@RequestBody List<String> productIds){// throws ProductNotFoundException{
+        try{
+            List<ProductValidated> products= productsService.getByProductIds(productIds);
+            return ResponseEntity.status(200).body(new CustomResponse(200, "ok", products));
+        }
+        catch(ProductNotFoundException pne)
+        {
+            return ResponseEntity.status(200).body(new CustomResponse(404,"No products found",null));
+        }
     }
     @RequestMapping(method=RequestMethod.POST,value="/addCategory")
     public String addCategory(@RequestBody CategoryRequest categoryDetails) throws CategoryNotInsertedException {
