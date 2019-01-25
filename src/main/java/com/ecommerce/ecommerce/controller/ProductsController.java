@@ -124,7 +124,7 @@ public class ProductsController {
         return ls;
     }
 
-    @RequestMapping(method=RequestMethod.PUT,value="/updateQuantity")
+    @RequestMapping(method=RequestMethod.POST,value="/updateQuantity")
     public String updateQuantity(@RequestBody ProductDetails productDetails) throws ProductNotFoundException {
         return validation.updateQuantity(productDetails);
     }
