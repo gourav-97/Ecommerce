@@ -49,7 +49,7 @@ public class ProductsController {
     }
 
     @RequestMapping(method=RequestMethod.GET,value="/categories")
-    public ResponseEntity<List<Cat>> getCategories() throws CategoryNotFoundException {
+    public ResponseEntity<?> getCategories() throws CategoryNotFoundException {
             return categoryService.getAllCategories();
     }
 
