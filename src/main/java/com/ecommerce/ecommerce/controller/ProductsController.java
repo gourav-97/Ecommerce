@@ -49,12 +49,12 @@ public class ProductsController {
     }
 
     @RequestMapping(method=RequestMethod.GET,value="/categories")
-    public ResponseEntity<?> getCategories() throws CategoryNotFoundException {
+    public ResponseEntity<CustomResponse> getCategories() throws CategoryNotFoundException {
             return categoryService.getAllCategories();
     }
 
     @RequestMapping(method=RequestMethod.GET,value="/categories/{categoryId}")
-    public ResponseEntity<List<Cat>> getSubCategories(@PathVariable String categoryId) throws CategoryNotFoundException {
+    public ResponseEntity<CustomResponse> getSubCategories(@PathVariable String categoryId) throws CategoryNotFoundException {
             return categoryService.getSubCategories(categoryId);
     }
 

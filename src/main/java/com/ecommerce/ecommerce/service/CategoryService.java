@@ -43,7 +43,7 @@ public class CategoryService {
         return categoryObject.get_id();
     }
 
-    public ResponseEntity<?> getAllCategories() throws CategoryNotFoundException{
+    public ResponseEntity<CustomResponse> getAllCategories() throws CategoryNotFoundException{
 
         List<Cat> categories = new ArrayList<>();
 
@@ -61,17 +61,18 @@ public class CategoryService {
         //return categories;
     }
 
-    public ResponseEntity<List<Cat>> getSubCategories(String categoryId) throws CategoryNotFoundException{
+    public ResponseEntity<CustomResponse> getSubCategories(String categoryId) throws CategoryNotFoundException{
         List<Category> categories = categoryRepository.findByparentId(categoryId);
         if(categories.isEmpty())
-            throw new CategoryNotFoundException("There are 0 categories in database");
+            return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse<>(404,"Ther are 0 categories in database",null));
+            //throw new CategoryNotFoundException("There are 0 categories in database");
         List<Cat> subCategories = new ArrayList<>();
         for(Category c:categories)
         {
             Cat category = new Cat(c.getCategoryName(),c.get_id(),c.getDesc(),c.getPicURL(),c.getTopScore());
             subCategories.add(category);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(subCategories);
+        return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse<>(200,"ok",subCategories));
         //return subCategories;
     }
 
