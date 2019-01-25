@@ -49,4 +49,18 @@ public class Validation
         return productsService.filterByPopularScore(subCategoryId,score);
 
     }
+
+//    public List<Product> displayByPopularScore(int score) throws ProductNotFoundException {
+//        if(score < 0 || score > 5 )
+//            throw new ProductNotFoundException("Enter Valid Popular Score");
+//        return productsService.displayByPopularScore(score);
+//
+//    }
+
+//    public List<Category> displayByTopScore(int topScore)
+//    {
+//        if(topScore < 0 || topScore > 5 )
+//            throw new CategoryNotFoundException("Enter ");
+//        categoryService.displayByTopScore(topScore);
+//    }
 }

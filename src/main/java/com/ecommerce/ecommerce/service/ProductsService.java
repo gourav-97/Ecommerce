@@ -214,4 +214,26 @@ public class ProductsService {
         return validProduct;
 
     }
+
+    public List<Product> displayByPopularScore() throws ProductNotFoundException {
+        Query query=new Query();
+        query.addCriteria(Criteria.where("popularScore").gte("4"));
+        List<Products> requiredProducts=mongoTemplate.find(query,Products.class);
+
+        if(requiredProducts.size()==0)
+            throw new ProductNotFoundException("there are no products matching your filter");
+
+        List<Product> validProduct=new ArrayList<>();
+        for(Products prod:requiredProducts)
+        {
+            Category subCategory = categoryRepository.findBy_id(prod.getParentId());
+            String subCategoryId = subCategory.get_id();
+            String subCategoryName = subCategory.getCategoryName();
+            String subCategoryParentId = subCategory.getParentId();
+            String categoryName = categoryRepository.findBy_id(subCategoryParentId).getCategoryName();
+            String categoryId = categoryRepository.findBycategoryName(categoryName).get_id();
+            validProduct.add(new Product(categoryName,categoryId,subCategoryName,subCategoryId,prod.getProductName(),prod.getProductId(),prod.getBrand(),prod.getPrice(),prod.getDesc(),prod.getQuantity(),prod.getGenFeatures(),prod.getProdSpecs(),prod.getPopularScore()));
+        }
+        return validProduct;
+    }
 }

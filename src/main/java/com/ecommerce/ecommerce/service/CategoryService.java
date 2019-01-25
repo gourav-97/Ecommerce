@@ -7,6 +7,8 @@ import com.ecommerce.ecommerce.repositories.ProductsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -79,4 +81,19 @@ public class CategoryService {
         return products;
     }
 
+    public List<Cat> displayByTopScore() throws CategoryNotFoundException {
+        Query query=new Query();
+        query.addCriteria(Criteria.where("topScore").gte("4"));
+        List<Category> requiredCategory=mongoTemplate.find(query,Category.class);
+
+        if(requiredCategory.size()==0)
+            throw new CategoryNotFoundException("there are no products matching your filter");
+
+        List<Cat> validCat=new ArrayList<>();
+        for(Category c:requiredCategory)
+        {
+            validCat.add(new Cat(c.getCategoryName(),c.get_id(),c.getDesc(),c.getPicURL(),c.getTopScore()));
+        }
+        return validCat;
+    }
 }
