@@ -158,8 +158,15 @@ public class ProductsController {
     }
 
     @RequestMapping(method=RequestMethod.GET,value="/displayByTopScore/")
-    public List<Cat> displayByTopScore() throws CategoryNotFoundException {
-        return categoryService.displayByTopScore();
+    public ResponseEntity<CustomResponse> displayByTopScore(){ // throws CategoryNotFoundException {
+        try{
+            List<Cat> topcategories = categoryService.displayByTopScore();
+            return ResponseEntity.status(200).body(new CustomResponse(200, "ok", topcategories));
+        }
+        catch(CategoryNotFoundException cne)
+        {
+            return ResponseEntity.status(200).body(new CustomResponse(404,"No top categories",null));
+        }
     }
 
     @RequestMapping(method=RequestMethod.POST,value = "/getProductsById")
@@ -174,34 +181,54 @@ public class ProductsController {
         }
     }
     @RequestMapping(method=RequestMethod.POST,value="/addCategory")
-    public String addCategory(@RequestBody CategoryRequest categoryDetails) throws CategoryNotInsertedException {
-        return validation.addCategory(categoryDetails);
+    public ResponseEntity<CustomResponse> addCategory(@RequestBody CategoryRequest categoryDetails){ //  throws CategoryNotInsertedException {
+        try{
+            String categoryIdInserted= validation.addCategory(categoryDetails);
+            return ResponseEntity.status(200).body(new CustomResponse(200, "category inserted", categoryIdInserted));
+        }
+        catch(CategoryNotInsertedException cnie){
+            return ResponseEntity.status(200).body(new CustomResponse(404,"Category not inserted",null));
+        }
     }
 
     @RequestMapping(method=RequestMethod.POST,value="/addProduct")
-    public String addProduct(@RequestBody ProductRequest productDetails) throws ProductNotInsertedException {
-        return validation.addProduct(productDetails);
+    public ResponseEntity<CustomResponse> addProduct(@RequestBody ProductRequest productDetails){// throws ProductNotInsertedException {
+        try{
+            String productIdInserted = validation.addProduct(productDetails);
+            return ResponseEntity.status(200).body(new CustomResponse(200, "product inserted", productIdInserted));
+        }
+        catch(ProductNotInsertedException pnie)
+        {
+            return ResponseEntity.status(200).body(new CustomResponse(404,"product not inserted",null));
+        }
     }
 
-    @RequestMapping(method=RequestMethod.POST,value="/check")
-    public List<String> check(@RequestBody String check) throws ProductNotFoundException,Exception {
-        System.out.println(check);
-        JSONObject obj = new JSONObject(check);
-        JSONArray arr = obj.getJSONArray("check");
-        System.out.println(arr);
-        for(int i=0;i<arr.length();i++){
-            System.out.println(arr.get(i));
-        }
-        List<String> ls = new ArrayList<>();
-        ls.add("dadad");
-        ls.add("dadad");
-        ls.add("dadad");
-        return ls;
-    }
+//    @RequestMapping(method=RequestMethod.POST,value="/check")
+//    public List<String> check(@RequestBody String check) throws ProductNotFoundException,Exception {
+//        System.out.println(check);
+//        JSONObject obj = new JSONObject(check);
+//        JSONArray arr = obj.getJSONArray("check");
+//        System.out.println(arr);
+//        for(int i=0;i<arr.length();i++){
+//            System.out.println(arr.get(i));
+//        }
+//        List<String> ls = new ArrayList<>();
+//        ls.add("dadad");
+//        ls.add("dadad");
+//        ls.add("dadad");
+//        return ls;
+//    }
 
     @RequestMapping(method=RequestMethod.PUT,value="/updateQuantity")
-    public String updateQuantity(@RequestBody ProductDetails productDetails) throws ProductNotFoundException {
-        return validation.updateQuantity(productDetails);
+    public ResponseEntity<CustomResponse> updateQuantity(@RequestBody ProductDetails productDetails){ // throws ProductNotFoundException {
+        try{
+            String updateStatus = validation.updateQuantity(productDetails);
+            return ResponseEntity.status(200).body(new CustomResponse(200, updateStatus, "quantity updated"));
+        }
+        catch(ProductNotFoundException pne)
+        {
+            return ResponseEntity.status(200).body(new CustomResponse(404,"Enter valid productId","quantity not updated"));
+        }
     }
 
 //    @RequestMapping(method = RequestMethod.GET,value="/topCategories")
