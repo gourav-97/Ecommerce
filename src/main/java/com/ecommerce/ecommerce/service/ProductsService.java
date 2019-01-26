@@ -125,24 +125,22 @@ public class ProductsService {
     }
 
     public List<Product> getProductByCategory(String categoryId) throws ProductNotFoundException{
-        Category category = categoryRepository.findBy_id(categoryId);
-        List<Category> subCategories = categoryRepository.findByparentId(categoryId);
+//        Category category = categoryRepository.findBy_id(categoryId);
+        Category subCategory = categoryRepository.findBy_id(categoryId);
+        Category category = categoryRepository.findBy_id(subCategory.getParentId());
 
-        if(category==null||subCategories==null)
+        if(subCategory==null || category==null)
             throw new ProductNotFoundException("There are no products in this category");
 
         List<Product> products = new ArrayList<>();
-        for(Category subCategoryNew : subCategories)
-        {
-            List<Products> product = productsRepository.findByparentId(subCategoryNew.get_id());
-            for(Products prod: product)
+        List<Products> product = productsRepository.findByparentId(subCategory.get_id());
+        for(Products prod: product)
             {
                 if(prod.getQuantity()>0) {
-                    Product newProduct = new Product(category.getCategoryName(), category.get_id(), subCategoryNew.getCategoryName(), subCategoryNew.get_id(), prod.getProductName(), prod.getProductId(), prod.getBrand(), prod.getPrice(), prod.getDesc(), prod.getQuantity(), prod.getGenFeatures(), prod.getProdSpecs(), prod.getPopularScore());
+                    Product newProduct = new Product(category.getCategoryName(), category.get_id(), subCategory.getCategoryName(), subCategory.get_id(), prod.getProductName(), prod.getProductId(), prod.getBrand(), prod.getPrice(), prod.getDesc(), prod.getQuantity(), prod.getGenFeatures(), prod.getProdSpecs(), prod.getPopularScore());
                     products.add(newProduct);
                 }
             }
-        }
         return products;
     }
 
