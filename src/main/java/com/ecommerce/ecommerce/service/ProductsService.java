@@ -1,5 +1,8 @@
 package com.ecommerce.ecommerce.service;
 
+import com.ecommerce.ecommerce.exceptions.CategoryNotFoundException;
+import com.ecommerce.ecommerce.exceptions.ProductNotFoundException;
+import com.ecommerce.ecommerce.exceptions.ProductNotInsertedException;
 import com.ecommerce.ecommerce.models.*;
 import com.ecommerce.ecommerce.repositories.CategoryRepository;
 import com.ecommerce.ecommerce.repositories.ProductsRepository;
@@ -121,12 +124,12 @@ public class ProductsService {
         return productsValidated;
     }
 
-    public List<Product> getProductByCategory(String categoryId) throws CategoryNotFoundException {
+    public List<Product> getProductByCategory(String categoryId) throws ProductNotFoundException{
         Category category = categoryRepository.findBy_id(categoryId);
         List<Category> subCategories = categoryRepository.findByparentId(categoryId);
 
         if(category==null||subCategories==null)
-            throw new CategoryNotFoundException("There are no categories/subcategories in database");
+            throw new ProductNotFoundException("There are no products in this category");
 
         List<Product> products = new ArrayList<>();
         for(Category subCategoryNew : subCategories)
@@ -229,12 +232,12 @@ public class ProductsService {
 
     public List<Product> displayByPopularScore() throws ProductNotFoundException {
         Query query=new Query();
-        query.addCriteria(Criteria.where("popularScore").gte("4"));
+        query.addCriteria(Criteria.where("popularScore").gte(4));
         List<Products> requiredProducts=mongoTemplate.find(query,Products.class);
 
-        if(requiredProducts.size()==0)
-            throw new ProductNotFoundException("there are no products matching your filter");
-
+//        if(requiredProducts.size()==0)
+//            throw new ProductNotFoundException("there are no products matching your filter");
+        System.out.println("In service");
         List<Product> validProduct=new ArrayList<>();
         for(Products prod:requiredProducts)
         {

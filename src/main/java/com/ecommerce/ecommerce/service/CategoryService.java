@@ -1,6 +1,9 @@
 package com.ecommerce.ecommerce.service;
 
 
+import com.ecommerce.ecommerce.exceptions.CategoryNotFoundException;
+import com.ecommerce.ecommerce.exceptions.CategoryNotInsertedException;
+import com.ecommerce.ecommerce.exceptions.ProductNotFoundException;
 import com.ecommerce.ecommerce.models.*;
 import com.ecommerce.ecommerce.repositories.CategoryRepository;
 import com.ecommerce.ecommerce.repositories.ProductsRepository;
@@ -37,11 +40,11 @@ public class CategoryService {
         Category categoryObject = new Category(null,categoryDetails.getCategoryName(),categoryDetails.getParentId(),categoryDetails.getDesc(),categoryDetails.getPicURL(),categoryDetails.getTopScore());
         Category c=mongoTemplate.insert(categoryObject,"Category");
         if(c==null)
-            throw new CategoryNotInsertedException("Category is not inserted");
+            throw new CategoryNotInsertedException("Category could not be Inserted, Try Again");
         return categoryObject.get_id();
     }
 
-    public List<Cat> getAllCategories() throws CategoryNotFoundException{
+    public List<Cat> getAllCategories() throws CategoryNotFoundException {
 
         List<Cat> categories = new ArrayList<>();
 
@@ -49,7 +52,7 @@ public class CategoryService {
         if(category==null)
             //throw new HttpResponseException
             //return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse<>(404,"Ther are 0 categories in database",null));
-               throw new CategoryNotFoundException("There are 0 categories in database");
+               throw new CategoryNotFoundException("There are no Categories matching your query");
         for(Category c:category)
         {
             Cat newCategory = new Cat(c.getCategoryName(),c.get_id(),c.getDesc(),c.getPicURL(),c.getTopScore());
@@ -62,24 +65,21 @@ public class CategoryService {
     public List<Cat> getSubCategories(String categoryId) throws CategoryNotFoundException{
         List<Category> categories = categoryRepository.findByparentId(categoryId);
         if(categories.isEmpty())
-            //return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse<>(404,"Ther are 0 categories in database",null));
-            throw new CategoryNotFoundException("There are 0 categories in database");
+            throw new CategoryNotFoundException("There are no SubCategories for this particular cateoory at present");
         List<Cat> subCategories = new ArrayList<>();
         for(Category c:categories)
         {
             Cat category = new Cat(c.getCategoryName(),c.get_id(),c.getDesc(),c.getPicURL(),c.getTopScore());
             subCategories.add(category);
         }
-        //return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse<>(200,"ok",subCategories));
         return subCategories;
     }
 
     public List<Product> getProductsInSubCat(String subCategoryId) throws CategoryNotFoundException, ProductNotFoundException {
         List<Product> products = new ArrayList<>();
-
         List<Products> productByParentId = productsRepository.findByparentId(subCategoryId);
         if(productByParentId==null)
-            throw new CategoryNotFoundException("There are 0 categories in database");
+            throw new CategoryNotFoundException("There are No Products for sale under this category");
         for(Products prod: productByParentId) {
             products.add(productsService.getByProductId(prod.getProductId()));
         }
@@ -88,11 +88,11 @@ public class CategoryService {
 
     public List<Cat> displayByTopScore() throws CategoryNotFoundException {
         Query query=new Query();
-        query.addCriteria(Criteria.where("topScore").gte("4"));
+        query.addCriteria(Criteria.where("topScore").gte(4).andOperator(Criteria.where("parentId").exists(true)));
         List<Category> requiredCategory=mongoTemplate.find(query,Category.class);
 
         if(requiredCategory.size()==0)
-            throw new CategoryNotFoundException("there are no products matching your filter");
+            throw new CategoryNotFoundException("There are no Products matching your filter");
 
         List<Cat> validCat=new ArrayList<>();
         for(Category c:requiredCategory)

@@ -1,5 +1,8 @@
 package com.ecommerce.ecommerce.models;
 
+import com.ecommerce.ecommerce.exceptions.CategoryNotInsertedException;
+import com.ecommerce.ecommerce.exceptions.ProductNotFoundException;
+import com.ecommerce.ecommerce.exceptions.ProductNotInsertedException;
 import com.ecommerce.ecommerce.service.CategoryService;
 import com.ecommerce.ecommerce.service.ProductsService;
 import org.springframework.beans.factory.annotation.Autowired;
