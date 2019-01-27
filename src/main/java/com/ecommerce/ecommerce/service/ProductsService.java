@@ -230,8 +230,10 @@ public class ProductsService {
 
     public List<Product> displayByPopularScore() throws ProductNotFoundException {
         Query query=new Query();
+        query.limit(10);
         query.addCriteria(Criteria.where("popularScore").gte(4));
         List<Products> requiredProducts=mongoTemplate.find(query,Products.class);
+
 
 //        if(requiredProducts.size()==0)
 //            throw new ProductNotFoundException("there are no products matching your filter");

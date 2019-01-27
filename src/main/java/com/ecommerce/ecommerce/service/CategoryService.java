@@ -88,6 +88,7 @@ public class CategoryService {
 
     public List<Cat> displayByTopScore() throws CategoryNotFoundException {
         Query query=new Query();
+        query.limit(10);
         query.addCriteria(Criteria.where("topScore").gte(4).andOperator(Criteria.where("parentId").exists(true)));
         List<Category> requiredCategory=mongoTemplate.find(query,Category.class);
 
