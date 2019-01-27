@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class CategoryService {
@@ -88,7 +89,8 @@ public class CategoryService {
 
     public List<Cat> displayByTopScore() throws CategoryNotFoundException {
         Query query=new Query();
-        query.limit(10);
+        int n=new Random().nextInt(50)+1;
+        query.limit(10).skip(n);
         query.addCriteria(Criteria.where("topScore").gte(4).andOperator(Criteria.where("parentId").exists(true)));
         List<Category> requiredCategory=mongoTemplate.find(query,Category.class);
 

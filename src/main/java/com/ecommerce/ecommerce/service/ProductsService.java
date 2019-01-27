@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class ProductsService {
@@ -230,7 +231,8 @@ public class ProductsService {
 
     public List<Product> displayByPopularScore() throws ProductNotFoundException {
         Query query=new Query();
-        query.limit(10);
+        int n=new Random().nextInt(50)+1;
+        query.limit(10).skip(n);
         query.addCriteria(Criteria.where("popularScore").gte(4));
         List<Products> requiredProducts=mongoTemplate.find(query,Products.class);
 
