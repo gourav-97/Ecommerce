@@ -48,7 +48,7 @@ public class ProductsService {
     public List<Product> getAllProduct() throws ProductNotFoundException {
         List<Product> product = new ArrayList<>();
         List<Products> products = productsRepository.findAll();
-
+    
         if(products.isEmpty())
         {
             throw new ProductNotFoundException("there are no products in database");
@@ -235,7 +235,6 @@ public class ProductsService {
 
 //        if(requiredProducts.size()==0)
 //            throw new ProductNotFoundException("there are no products matching your filter");
-        System.out.println("In service");
         List<Product> validProduct=new ArrayList<>();
         for(Products prod:requiredProducts)
         {

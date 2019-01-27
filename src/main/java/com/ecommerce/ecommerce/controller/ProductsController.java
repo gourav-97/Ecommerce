@@ -32,7 +32,7 @@ public class ProductsController {
     CategoryService categoryService;
 
 
-    
+
     @Autowired
     Validation validation;
 
@@ -137,7 +137,6 @@ public class ProductsController {
     @RequestMapping(method = RequestMethod.GET, value = "/displayByPopularScore")
     public ResponseEntity<CustomResponse> displayByPopularScore() { //throws ProductNotFoundException {
         try {
-            System.out.println("Hello");
             List<Product> popularProducts = productsService.displayByPopularScore();
             for(Product i :popularProducts)
                 System.out.println(i);
@@ -187,7 +186,7 @@ public class ProductsController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/updateQuantity")
+    @RequestMapping(method = RequestMethod.POST, value = "/updateQuantity")
     public ResponseEntity<CustomResponse> updateQuantity(@RequestBody ProductDetails productDetails) { // throws ProductNotFoundException {
         try {
             String updateStatus = validation.updateQuantity(productDetails);
