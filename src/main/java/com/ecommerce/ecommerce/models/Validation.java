@@ -29,13 +29,16 @@ public class Validation
             return productsService.addProduct(productDetails);
     }
 
+    //validating the categoryId before inserting the category into databse
     public String addCategory(CategoryRequest categoryDetails) throws CategoryNotInsertedException {
+        //length of objectId in mongoDb is 12
         if(categoryDetails.getParentId()!=null && categoryDetails.getParentId().length()<12)
             return "Enter Valid parentId";
         else
             return categoryService.addCategory(categoryDetails);
     }
 
+    //validating the productId before updating its quantity in database
     public String updateQuantity(ProductDetails productDetails) throws ProductNotFoundException
     {
         for(ProductValidated p:productDetails.getProductIds())
@@ -46,6 +49,7 @@ public class Validation
         return productsService.updateQuantity(productDetails);
     }
 
+    //validating the popular score before user applies a filter
     public List<Product> filterByPopularScore(String subCategoryId, int score) throws ProductNotFoundException {
         if(score < 0 || score > 5 )
             throw new ProductNotFoundException("Enter Valid Popular Score");
