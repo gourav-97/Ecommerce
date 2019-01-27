@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class ProductsService {
@@ -36,22 +37,26 @@ public class ProductsService {
         this.productsRepositoryCustom = productsRepositoryCustom;
     }
 
+
+    //to add a single product in database
     public String addProduct(ProductRequest productDetails) throws ProductNotInsertedException {
         System.out.println(productDetails.getProductId());
         Products productsObject =new Products(null,productDetails.getParentId(),productDetails.getProductName(),productDetails.getProductId(),productDetails.getBrand(),productDetails.getPrice(),productDetails.getDesc(),productDetails.getQuantity(),productDetails.getGenFeatures(),productDetails.getProdSpecs(),productDetails.getPopularScore());
         Products p=productsRepository.insert(productsObject);
         if(p==null)
-            throw new ProductNotInsertedException("product was not inserted to database");
+            throw new ProductNotInsertedException("Product was not inserted to database");
         return productsObject.getProductId();
     }
 
+
+    //returns a list of all the products in current sub-category in database
     public List<Product> getAllProduct() throws ProductNotFoundException {
         List<Product> product = new ArrayList<>();
         List<Products> products = productsRepository.findAll();
     
         if(products.isEmpty())
         {
-            throw new ProductNotFoundException("there are no products in database");
+            throw new ProductNotFoundException("There are no products in database");
             //return ResponseEntity.status(200).body(new CustomResponse(404,"there are no products in database",null));
         }
 
@@ -67,10 +72,11 @@ public class ProductsService {
                 product.add(newProduct);
             }
         }
-        //return ResponseEntity.status(200).body(new CustomResponse(200,"ok",product));
         return product;
     }
 
+
+    //returns the details of product with given productId
     public Product getByProductId(String productId) throws ProductNotFoundException {
         Products product = productsRepository.findByproductId(productId);
         if (product == null) {
@@ -86,6 +92,8 @@ public class ProductsService {
         return new Product(categoryName,categoryId,subCategoryName,subCategoryId,product.getProductName(),product.getProductId(),product.getBrand(),product.getPrice(),product.getDesc(),product.getQuantity(),product.getGenFeatures(),product.getProdSpecs(),product.getPopularScore());
     }
 
+
+    //returns a list of product details corresponding to given product Ids if quantity >0, used for validation
     public List<Product> getByProductId(List<String> productIds) throws ProductNotFoundException {
         List<Product> products = new ArrayList<>();
         for(String productId :productIds) {
@@ -108,6 +116,7 @@ public class ProductsService {
         return products;
     }
 
+    //returns a list of product details corresponding to each productId
     public List<ProductValidated> getByProductIds(List<String> productIds) throws ProductNotFoundException{
 
         List<ProductValidated> productsValidated = new ArrayList<>();
@@ -124,9 +133,11 @@ public class ProductsService {
         return productsValidated;
     }
 
-    public List<Product> getProductByCategory(String categoryId) throws ProductNotFoundException{
+
+    // returns a list of all products in given sub-category
+    public List<Product> getProductByCategory(String subCategoryId) throws ProductNotFoundException{
 //        Category category = categoryRepository.findBy_id(categoryId);
-        Category subCategory = categoryRepository.findBy_id(categoryId);
+        Category subCategory = categoryRepository.findBy_id(subCategoryId);
         Category category = categoryRepository.findBy_id(subCategory.getParentId());
 
         if(subCategory==null || category==null)
@@ -144,6 +155,8 @@ public class ProductsService {
         return products;
     }
 
+
+    //  increase/decrease the quantity of all products when an order is canceled/competed
     public String updateQuantity(ProductDetails productDetails) throws ProductNotFoundException {
         for(ProductValidated product:productDetails.getProductIds())
         {
@@ -165,6 +178,8 @@ public class ProductsService {
         return "quantity updated";
     }
 
+
+    // sort all the products low to high by price in the current subcategory
     public List<Product> sortByPriceLTH(String subCategoryId) throws ProductNotFoundException {
         Query query=new Query();
         query.addCriteria(Criteria.where("parentId").is(subCategoryId));
@@ -186,6 +201,7 @@ public class ProductsService {
         return sortedProduct;
     }
 
+    // sort all the products high to low by price in the current subcategory
     public List<Product> sortByPriceHTL(String subCategoryId) throws ProductNotFoundException {
         Query query=new Query();
         query.addCriteria(Criteria.where("parentId").is(subCategoryId));
@@ -207,6 +223,7 @@ public class ProductsService {
         return sortedProduct;
     }
 
+    // filter the products which have a popular score > given score in current sub category
     public List<Product> filterByPopularScore(String subCategoryId, int score) throws ProductNotFoundException {
         Query query=new Query();
         query.addCriteria(Criteria.where("parentId").is(subCategoryId).and("popularScore").gte(score));
@@ -228,13 +245,20 @@ public class ProductsService {
 
     }
 
+    //display some(max 10) random popular products
     public List<Product> displayByPopularScore() throws ProductNotFoundException {
         Query query=new Query();
+        int n=new Random().nextInt(50)+1;
+        query.limit(10).skip(n);
+
+        //taking 4 as a threshhold popularscore for popular producs
         query.addCriteria(Criteria.where("popularScore").gte(4));
         List<Products> requiredProducts=mongoTemplate.find(query,Products.class);
 
-//        if(requiredProducts.size()==0)
-//            throw new ProductNotFoundException("there are no products matching your filter");
+
+       if(requiredProducts.size()==0)
+            throw new ProductNotFoundException("there are no products matching your filter");
+       // System.out.println("In service");
         List<Product> validProduct=new ArrayList<>();
         for(Products prod:requiredProducts)
         {
