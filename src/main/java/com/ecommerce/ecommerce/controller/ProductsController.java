@@ -41,6 +41,7 @@ public class ProductsController {
         return "Welcome To The Site";
     }
 
+    //returns all products in current sub-category as ResponseEntity body
     @RequestMapping(method = RequestMethod.GET, value = "/products")
     public ResponseEntity<CustomResponse> showAll() {// throws ProductNotFoundException {
         try {
@@ -51,6 +52,7 @@ public class ProductsController {
         }
     }
 
+    //shows all details of selected product
     @RequestMapping(method = RequestMethod.GET, value = "/products/{productId}")
     public ResponseEntity<CustomResponse> showById(@PathVariable List<String> productId) {// throws ProductNotFoundException {
         try {
@@ -61,6 +63,7 @@ public class ProductsController {
         }
     }
 
+    //shows list of all top level categories
     @RequestMapping(method = RequestMethod.GET, value = "/categories")
     public ResponseEntity<CustomResponse> getCategories() {// throws CategoryNotFoundException {
         try {
@@ -71,6 +74,7 @@ public class ProductsController {
         }
     }
 
+    //shows a list of all sub-categories in given category
     @RequestMapping(method = RequestMethod.GET, value = "/categories/{categoryId}")
     public ResponseEntity<CustomResponse> getSubCategories(@PathVariable String categoryId) {// throws CategoryNotFoundException {
         try {
@@ -81,6 +85,7 @@ public class ProductsController {
         }
     }
 
+    //shows a list of all products in given sub-category
     @RequestMapping(method = RequestMethod.GET, value = "/categories/{categoryId}/products")
     public ResponseEntity<CustomResponse> getProductsByCategory(@PathVariable String categoryId) {// throws CategoryNotFoundException {
         try {
@@ -92,6 +97,7 @@ public class ProductsController {
         }
     }
 
+    //shows a list of all products in given sub-category
     @RequestMapping(method = RequestMethod.GET, value = "/categories/{categoryId}/{subCategoryId}")
     public ResponseEntity<CustomResponse> getProduct(@PathVariable @NotNull String categoryId, @PathVariable String subCategoryId) {// throws CategoryNotFoundException, ProductNotFoundException {
         try {
@@ -103,6 +109,7 @@ public class ProductsController {
         }
     }
 
+    //sort products in given sub-category low to high by price
     @RequestMapping(method = RequestMethod.GET, value = "/sortByPriceLTH/{subCategoryId}")
     public ResponseEntity<CustomResponse> sortByPriceLTH(@PathVariable String subCategoryId) {
         try {
@@ -114,6 +121,7 @@ public class ProductsController {
         // return null;
     }
 
+    //sort products in given sub-category high to low by price
     @RequestMapping(method = RequestMethod.GET, value = "/sortByPriceHTL/{subCategoryId}")
     public ResponseEntity<CustomResponse> sortByPriceHTL(@PathVariable String subCategoryId) {
         try {
@@ -124,6 +132,7 @@ public class ProductsController {
         }
     }
 
+    //filter products based on popular score used by uder in current sub-category
     @RequestMapping(method = RequestMethod.GET, value = "/filterByPopularScore/{subCategoryId}/{score}")
     public ResponseEntity<CustomResponse> filterByPopularScore(@PathVariable("subCategoryId") String subCategoryId, @PathVariable("score") int score) {// throws ProductNotFoundException {
         try {
@@ -134,10 +143,11 @@ public class ProductsController {
         }
     }
 
+    //shows a list of popular products
     @RequestMapping(method = RequestMethod.GET, value = "/displayByPopularScore")
     public ResponseEntity<CustomResponse> displayByPopularScore() { //throws ProductNotFoundException {
         try {
-            System.out.println("Hello");
+            //System.out.println("Hello");
             List<Product> popularProducts = productsService.displayByPopularScore();
             for(Product i :popularProducts)
                 System.out.println(i);
@@ -147,6 +157,7 @@ public class ProductsController {
         }
     }
 
+    //shows a list of top categories
     @RequestMapping(method = RequestMethod.GET, value = "/displayByTopScore")
     public ResponseEntity<CustomResponse> displayByTopScore() {
         try {
@@ -157,6 +168,8 @@ public class ProductsController {
         }
     }
 
+
+    //shows a list of product details corresponding to each productId
     @RequestMapping(method = RequestMethod.POST, value = "/getProductsById")
     public ResponseEntity<CustomResponse> getProductsById(@RequestBody List<String> productIds) {// throws ProductNotFoundException{
         try {
@@ -167,6 +180,7 @@ public class ProductsController {
         }
     }
 
+   //add a category in databse
     @RequestMapping(method = RequestMethod.POST, value = "/addCategory")
     public ResponseEntity<CustomResponse> addCategory(@RequestBody CategoryRequest categoryDetails) { //  throws CategoryNotInsertedException {
         try {
@@ -177,6 +191,7 @@ public class ProductsController {
         }
     }
 
+    //add a product in database
     @RequestMapping(method = RequestMethod.POST, value = "/addProduct")
     public ResponseEntity<CustomResponse> addProduct(@RequestBody ProductRequest productDetails) {// throws ProductNotInsertedException {
         try {
@@ -187,6 +202,7 @@ public class ProductsController {
         }
     }
 
+    //update the quantity of given products after an order is cancelled/completed
     @RequestMapping(method = RequestMethod.PUT, value = "/updateQuantity")
     public ResponseEntity<CustomResponse> updateQuantity(@RequestBody ProductDetails productDetails) { // throws ProductNotFoundException {
         try {

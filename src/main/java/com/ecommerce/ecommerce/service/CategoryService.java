@@ -36,6 +36,8 @@ public class CategoryService {
         this.productsRepository = productsRepository;
     }
 
+
+    //to add a single category/sub-category in database
     public String addCategory(CategoryRequest categoryDetails) throws CategoryNotInsertedException {
 
         Category categoryObject = new Category(null,categoryDetails.getCategoryName(),categoryDetails.getParentId(),categoryDetails.getDesc(),categoryDetails.getPicURL(),categoryDetails.getTopScore());
@@ -45,6 +47,8 @@ public class CategoryService {
         return categoryObject.get_id();
     }
 
+
+    // returns a list of top most level categories
     public List<Cat> getAllCategories() throws CategoryNotFoundException {
 
         List<Cat> categories = new ArrayList<>();
@@ -63,10 +67,11 @@ public class CategoryService {
         return categories;
     }
 
+    //returns a list of all sub-categories in given category
     public List<Cat> getSubCategories(String categoryId) throws CategoryNotFoundException{
         List<Category> categories = categoryRepository.findByparentId(categoryId);
         if(categories.isEmpty())
-            throw new CategoryNotFoundException("There are no SubCategories for this particular cateoory at present");
+            throw new CategoryNotFoundException("There are no SubCategories for this particular category at present");
         List<Cat> subCategories = new ArrayList<>();
         for(Category c:categories)
         {
@@ -76,6 +81,7 @@ public class CategoryService {
         return subCategories;
     }
 
+    //returns a list of all products in given sub-category
     public List<Product> getProductsInSubCat(String subCategoryId) throws CategoryNotFoundException, ProductNotFoundException {
         List<Product> products = new ArrayList<>();
         List<Products> productByParentId = productsRepository.findByparentId(subCategoryId);
@@ -87,6 +93,7 @@ public class CategoryService {
         return products;
     }
 
+    //display on home page (max 10) top categories
     public List<Cat> displayByTopScore() throws CategoryNotFoundException {
         Query query=new Query();
         int n=new Random().nextInt(50)+1;
@@ -95,7 +102,7 @@ public class CategoryService {
         List<Category> requiredCategory=mongoTemplate.find(query,Category.class);
 
         if(requiredCategory.size()==0)
-            throw new CategoryNotFoundException("There are no Products matching your filter");
+            throw new CategoryNotFoundException("There are no categories matching your filter");
 
         List<Cat> validCat=new ArrayList<>();
         for(Category c:requiredCategory)
