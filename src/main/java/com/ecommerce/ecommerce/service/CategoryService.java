@@ -96,8 +96,8 @@ public class CategoryService {
     //display on home page (max 10) top categories
     public List<Cat> displayByTopScore() throws CategoryNotFoundException {
         Query query=new Query();
-        int n=new Random().nextInt(50)+1;
-        query.limit(10).skip(n);
+        //int n=new Random().nextInt(2)+1;
+        query.limit(6).skip(1);
         query.addCriteria(Criteria.where("topScore").gte(4).andOperator(Criteria.where("parentId").exists(true)));
         List<Category> requiredCategory=mongoTemplate.find(query,Category.class);
 

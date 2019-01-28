@@ -248,8 +248,8 @@ public class ProductsService {
     //display some(max 10) random popular products
     public List<Product> displayByPopularScore() throws ProductNotFoundException {
         Query query=new Query();
-        int n=new Random().nextInt(50)+1;
-        query.limit(10).skip(n);
+        //int n=new Random().nextInt(2)+1;
+        query.limit(6).skip(2);
 
         //taking 4 as a threshhold popularscore for popular producs
         query.addCriteria(Criteria.where("popularScore").gte(4));
