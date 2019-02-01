@@ -85,10 +85,12 @@ public class CategoryService {
     public List<Product> getProductsInSubCat(String subCategoryId) throws CategoryNotFoundException, ProductNotFoundException {
         List<Product> products = new ArrayList<>();
         List<Products> productByParentId = productsRepository.findByparentId(subCategoryId);
-        if(productByParentId==null)
+        if(productByParentId.isEmpty())
             throw new CategoryNotFoundException("There are No Products for sale under this category");
         for(Products prod: productByParentId) {
-            products.add(productsService.getByProductId(prod.getProductId()));
+            Product product = productsService.getByProductId(prod.getProductId());
+            if(product.getQuantity()>0)
+                products.add(product);
         }
         return products;
     }

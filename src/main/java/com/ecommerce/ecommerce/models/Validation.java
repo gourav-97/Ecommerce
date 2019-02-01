@@ -38,7 +38,7 @@ public class Validation
             return categoryService.addCategory(categoryDetails);
     }
 
-    //validating the productId before updating its quantity in database
+//    validating the productId before updating its quantity in database
     public String updateQuantity(ProductDetails productDetails) throws ProductNotFoundException
     {
         for(ProductValidated p:productDetails.getProductIds())

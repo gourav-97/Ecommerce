@@ -1,0 +1,123 @@
+{
+    "categoryName": "Electronics",
+    "categoryId": "5c48c6e90278e02f5522b16d",
+    "desc": "All Types Of Electronics",
+    "picURL": "https://smedia2.intoday.in/btmt/images/stories/consumer-essay+_660_111117042246.jpg",
+    "topScore": 2
+  },
+  {
+    "categoryName": "Sports",
+    "categoryId": "5c4961510278e023d28c230a",
+    "desc": "Sports Inventory And Proteins",
+    "picURL": "https://cdn.shopclues.com/images/thumbnails/48665/280/1/41pkyKDjQL1480746835.jpg",
+    "topScore": 3
+  },
+  {
+    "categoryName": "Footwear",
+    "categoryId": "5c4963840278e03c64e4ca6f",
+    "desc": "All Types of footwear",
+    "picURL": "https://cdn.shopclues.com/images/banners/Brand_CLP_W_Sparx.jpg",
+    "topScore": 4
+  },
+  {
+    "categoryName": "Clothing",
+    "categoryId": "5c4965380278e03c64e4ca73",
+    "desc": "Apparels",
+    "picURL": "https://cdn.shopclues.com/images/banners/Brand_13July_Iqbal_W_CLP_Rigo.jpg",
+    "topScore": 3
+  }
+]
+
+
+
+"categoryName": "Sandals",
+"categoryId": "5c4963ff0278e03c64e4ca70",
+
+"categoryName": "Boots",
+"categoryId": "5c49642c0278e03c64e4ca71", Done
+
+"categoryName": "Heels",
+"categoryId": "5c4964520278e03c64e4ca72",
+
+"categoryName": "Home Gym",
+"categoryId": "5c4962ef0278e03c64e4ca6c", Done
+
+"categoryName": "Inventory",
+"categoryId": "5c4963100278e03c64e4ca6d",
+
+"categoryName": "Whey Products",
+"categoryId": "5c49632d0278e03c64e4ca6e",
+
+"categoryName": "Phones",
+"categoryId": "5c48c8300278e02f5522b16e", Add 5 more
+
+"categoryName": "HeadPhones",
+"categoryId": "5c4950de0278e016118e5c2e",
+
+"categoryName": "Keyboards",
+"categoryId": "5c49583f0278e023d28c2307",
+
+
+"categoryName": "Pen Drive",
+"categoryId": "5c4958b10278e023d28c2308", done
+
+"categoryName": "Power Banks",
+"categoryId": "5c495aeb0278e023d28c2309",
+
+
+"categoryName": "Jeans",
+"categoryId": "5c4965840278e03c64e4ca74",
+
+
+"categoryName": "Tees",
+"categoryId": "5c4965aa0278e03c64e4ca75", done
+
+"categoryName": "Sarees",
+"categoryId": "5c4965d40278e03c64e4ca76",
+
+"categoryName": "Kurti",
+"categoryId": "5c4965fd0278e03c64e4ca77",
+
+P01 Redmi 6
+P02 Footista Vittoria Boots
+P03 Body Maxx 52 Kg Home Gym Package 
+P04 One Plus
+P05 Elvace Tan Styleo Boot 
+P06 TT batts
+P07  tees
+P08 Headphone
+P09 Headphone
+P10 Headphone
+P11 FLOXTAR
+P12 1 Pair Body Building Push Up Bars 
+P13 tees
+P14 Leather Ball
+P15 tees
+P16 Badminton 
+P17 tees
+P18 Closet-37
+P19 
+P20 Headphone
+P21 KeyBoard
+P22 Headphone
+P23 KeyBoard
+P24 Tees
+P25 KeyBoard
+P26
+P27
+P28 pd
+P29 pd
+P30 pd
+
+
+
+
+
+
+UI 
+site localhost url 
+loading image
+/paymentOption
+payemnt page - laoding 
+product page - show rating, Filter text change to high to low or low to high etc. 
+		Buy NOw Button Add to cart message

@@ -1,12 +1,10 @@
 package com.ecommerce.ecommerce.service;
 
-import com.ecommerce.ecommerce.exceptions.CategoryNotFoundException;
 import com.ecommerce.ecommerce.exceptions.ProductNotFoundException;
 import com.ecommerce.ecommerce.exceptions.ProductNotInsertedException;
 import com.ecommerce.ecommerce.models.*;
 import com.ecommerce.ecommerce.repositories.CategoryRepository;
 import com.ecommerce.ecommerce.repositories.ProductsRepository;
-import com.ecommerce.ecommerce.repositories.ProductsRepositoryCustom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -18,23 +16,20 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @Service
 public class ProductsService {
 
     CategoryRepository categoryRepository;
     ProductsRepository productsRepository;
-    ProductsRepositoryCustom productsRepositoryCustom;
 
     @Autowired
     MongoTemplate mongoTemplate;
 
 
-    public ProductsService(CategoryRepository categoryRepository, ProductsRepository productsRepository, ProductsRepositoryCustom productsRepositoryCustom) {
+    public ProductsService(CategoryRepository categoryRepository, ProductsRepository productsRepository) {
         this.categoryRepository = categoryRepository;
         this.productsRepository = productsRepository;
-        this.productsRepositoryCustom = productsRepositoryCustom;
     }
 
 
@@ -53,7 +48,7 @@ public class ProductsService {
     public List<Product> getAllProduct() throws ProductNotFoundException {
         List<Product> product = new ArrayList<>();
         List<Products> products = productsRepository.findAll();
-    
+
         if(products.isEmpty())
         {
             throw new ProductNotFoundException("There are no products in database");
@@ -126,8 +121,10 @@ public class ProductsService {
             if(product==null)
                 //return ResponseEntity.status(200).body(new CustomResponse(404,"Some products were not found "+productId,null));
                 throw new ProductNotFoundException("Some Products were not found");
-            ProductValidated productValidated = new ProductValidated(product.getCategory(),product.getCategoryId(),product.getProductName(),product.getProductId(),product.getPrice(),product.getQuantity());
-            productsValidated.add(productValidated);
+            if(product.getQuantity()>0) {
+                ProductValidated productValidated = new ProductValidated(product.getCategory(), product.getCategoryId(), product.getProductName(), product.getProductId(), product.getPrice(), product.getQuantity());
+                productsValidated.add(productValidated);
+            }
         }
         //return ResponseEntity.status(200).body(new CustomResponse(200,"ok",productsValidated));
         return productsValidated;
@@ -145,10 +142,14 @@ public class ProductsService {
 
         List<Product> products = new ArrayList<>();
         List<Products> product = productsRepository.findByparentId(subCategory.get_id());
+        if(product.isEmpty()) {
+            System.out.println("Is Empty");
+            throw new ProductNotFoundException("There is no product for this SubCatergory");
+        }
         for(Products prod: product)
             {
                 if(prod.getQuantity()>0) {
-                    Product newProduct = new Product(category.getCategoryName(), category.get_id(), subCategory.getCategoryName(), subCategory.get_id(), prod.getProductName(), prod.getProductId(), prod.getBrand(), prod.getPrice(), prod.getDesc(), prod.getQuantity(), prod.getGenFeatures(), prod.getProdSpecs(), prod.getPopularScore());
+                    Product newProduct = new Product(subCategory.getPicURL(), category.get_id(), subCategory.getCategoryName(), subCategory.get_id(), prod.getProductName(), prod.getProductId(), prod.getBrand(), prod.getPrice(), prod.getDesc(), prod.getQuantity(), prod.getGenFeatures(), prod.getProdSpecs(), prod.getPopularScore());
                     products.add(newProduct);
                 }
             }
@@ -249,7 +250,7 @@ public class ProductsService {
     public List<Product> displayByPopularScore() throws ProductNotFoundException {
         Query query=new Query();
         //int n=new Random().nextInt(2)+1;
-        query.limit(6).skip(2);
+        query.limit(6).skip(5);
 
         //taking 4 as a threshhold popularscore for popular producs
         query.addCriteria(Criteria.where("popularScore").gte(4));
@@ -268,6 +269,7 @@ public class ProductsService {
             String subCategoryParentId = subCategory.getParentId();
             String categoryName = categoryRepository.findBy_id(subCategoryParentId).getCategoryName();
             String categoryId = categoryRepository.findBycategoryName(categoryName).get_id();
+            categoryName=subCategory.getPicURL();
             validProduct.add(new Product(categoryName,categoryId,subCategoryName,subCategoryId,prod.getProductName(),prod.getProductId(),prod.getBrand(),prod.getPrice(),prod.getDesc(),prod.getQuantity(),prod.getGenFeatures(),prod.getProdSpecs(),prod.getPopularScore()));
         }
         return validProduct;

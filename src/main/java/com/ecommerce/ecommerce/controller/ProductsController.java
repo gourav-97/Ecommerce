@@ -31,7 +31,17 @@ public class ProductsController {
     @Autowired
     CategoryService categoryService;
 
+    public ProductsController() {
+    }
 
+    public ProductsController(CategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
+
+    public ProductsController(ProductsService productsService, CategoryService categoryService) {
+        this.productsService = productsService;
+        this.categoryService = categoryService;
+    }
 
     @Autowired
     Validation validation;
