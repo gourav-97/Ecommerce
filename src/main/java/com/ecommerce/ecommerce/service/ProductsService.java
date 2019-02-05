@@ -26,6 +26,14 @@ public class ProductsService {
     @Autowired
     MongoTemplate mongoTemplate;
 
+    public ProductsService() {
+    }
+
+    public ProductsService(CategoryRepository categoryRepository, ProductsRepository productsRepository, MongoTemplate mongoTemplate) {
+        this.categoryRepository = categoryRepository;
+        this.productsRepository = productsRepository;
+        this.mongoTemplate = mongoTemplate;
+    }
 
     public ProductsService(CategoryRepository categoryRepository, ProductsRepository productsRepository) {
         this.categoryRepository = categoryRepository;
@@ -156,7 +164,6 @@ public class ProductsService {
         return products;
     }
 
-
     //  increase/decrease the quantity of all products when an order is canceled/competed
     public String updateQuantity(ProductDetails productDetails) throws ProductNotFoundException {
         for(ProductValidated product:productDetails.getProductIds())
@@ -178,7 +185,6 @@ public class ProductsService {
         }
         return "quantity updated";
     }
-
 
     // sort all the products low to high by price in the current subcategory
     public List<Product> sortByPriceLTH(String subCategoryId) throws ProductNotFoundException {

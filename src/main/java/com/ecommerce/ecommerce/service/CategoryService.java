@@ -24,13 +24,14 @@ public class CategoryService {
     MongoTemplate mongoTemplate;
     CategoryRepository categoryRepository;
     ProductsRepository productsRepository;
+
     @Autowired
     ProductsService productsService;
 
     @Lazy @Autowired
     CategoryService categoryService;
 
-    public CategoryService(MongoTemplate mongoTemplate, CategoryRepository categoryRepository, ProductsRepository productsRepository) {
+    public CategoryService(MongoTemplate mongoTemplate, CategoryRepository categoryRepository, ProductsRepository productsRepository,ProductsService productsService) {
         this.mongoTemplate = mongoTemplate;
         this.categoryRepository = categoryRepository;
         this.productsRepository = productsRepository;
@@ -85,9 +86,10 @@ public class CategoryService {
     public List<Product> getProductsInSubCat(String subCategoryId) throws CategoryNotFoundException, ProductNotFoundException {
         List<Product> products = new ArrayList<>();
         List<Products> productByParentId = productsRepository.findByparentId(subCategoryId);
-        if(productByParentId.isEmpty())
+        if(!(productByParentId.size()>0))
             throw new CategoryNotFoundException("There are No Products for sale under this category");
         for(Products prod: productByParentId) {
+            System.out.println(prod.getProductId());
             Product product = productsService.getByProductId(prod.getProductId());
             if(product.getQuantity()>0)
                 products.add(product);

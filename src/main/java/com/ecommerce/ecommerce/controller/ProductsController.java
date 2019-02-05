@@ -45,22 +45,22 @@ public class ProductsController {
 
     @Autowired
     Validation validation;
+//
+//    @RequestMapping(method = RequestMethod.GET, value = "/")
+//    public String welcome() {
+//        return "Welcome To The Site";
+//    }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/")
-    public String welcome() {
-        return "Welcome To The Site";
-    }
-
-    //returns all products in current sub-category as ResponseEntity body
-    @RequestMapping(method = RequestMethod.GET, value = "/products")
-    public ResponseEntity<CustomResponse> showAll() {// throws ProductNotFoundException {
-        try {
-            List<Product> allProduct = productsService.getAllProduct();
-            return ResponseEntity.status(200).body(new CustomResponse(200, "ok", allProduct));
-        } catch (ProductNotFoundException pne) {
-            return ResponseEntity.status(200).body(new CustomResponse(404, "no product found", null));
-        }
-    }
+//    //returns all products in current sub-category as ResponseEntity body
+//    @RequestMapping(method = RequestMethod.GET, value = "/products")
+//    public ResponseEntity<CustomResponse> showAll() {// throws ProductNotFoundException {
+//        try {
+//            List<Product> allProduct = productsService.getAllProduct();
+//            return ResponseEntity.status(200).body(new CustomResponse(200, "ok", allProduct));
+//        } catch (ProductNotFoundException pne) {
+//            return ResponseEntity.status(200).body(new CustomResponse(404, "no product found", null));
+//        }
+//    }
 
     //shows all details of selected product
     @RequestMapping(method = RequestMethod.GET, value = "/products/{productId}")
